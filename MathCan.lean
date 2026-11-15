@@ -34,3 +34,4 @@ import MathCan.CoarseStateDependence
 import MathCan.TacticFibers
 import MathCan.SpectralAliasing
 import MathCan.SpectralStability
+import MathCan.ContractionAliasing
