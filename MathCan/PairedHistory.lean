@@ -41,6 +41,7 @@ theorem pairedSuffixAccuracyExactHalf {Suffix : Type}
   | nil => rfl
   | cons suffix rest ih =>
       simp [suffixPairCorrect_one, ih]
+      omega
 
 /-- The same suffix-only predictor cannot be correct on both
     members of any oldest-bit intervention pair. -/
