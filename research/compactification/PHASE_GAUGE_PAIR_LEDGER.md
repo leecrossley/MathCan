@@ -48,6 +48,16 @@ For T=8 and w=4, the exact necklace count is 10. Thus for n≤10, eight recurren
 
 An independent read of the earlier committed `LoopedTransformers` 7M pretrained `gaoxin492/step_21700` correctness-receipt (checkpoint SHA-256 `932b5e0d...`) and matched benchmark counted 1,795 eligible distinct-digit pairs within the 64-item `S4_stalled` stratum. At eight ACT visits, the source has \(D(W)=1414\), \(D(N)=1389\), \(D(C)=1369\). Thus COE-07A attributes **25** distinctions to known clock phase and **20** further distinctions to cyclic-invariant order. The other three strata have no cyclic-invariant gain over count in that eight-visit source record.
 
+The same frozen output trace has the following **visit-budget sensitivity** for stalled boards, with the identical 1,795 eligible pairs:
+
+| Visits | Ordered D(W) | Cyclic D(N) | Count D(C) | Clock-sensitive | Cyclic beyond count |
+| ---: | ---: | ---: | ---: | ---: | ---: |
+| 4 | 1,278 | 1,244 | 1,244 | 34 | 0 |
+| 8 | 1,414 | 1,389 | 1,369 | 25 | 20 |
+| 16 | 1,447 | 1,428 | 1,422 | 19 | 6 |
+
+These are descriptive post-hoc replays across the same frozen boards, and all outcomes are recorded with answer-aware correctness bits.
+
 This empirical descriptor is \(W_t=1\{\text{model's target-cell prediction at step t equals the known target}\}\). It uses **ground truth**, so it is an oracle on an existing native run, rather than a deployable model-observable probe or evidence of a learned dark-fiber code. The preregistered native latent-probe test in `LoopedTransformers PR #72` requires checkpoint inference and its independently frozen fit/test gate. The source file Git blob IDs appear in that PR's `NATIVE_OUTPUT_TELEMETRY.md`.
 
 ## Formalization boundary

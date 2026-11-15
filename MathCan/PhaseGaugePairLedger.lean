@@ -68,6 +68,18 @@ theorem s4_stalled_eight_visit_arithmetic :
     1389 = 1369 + 20 ∧
     1369 ≤ 1795 := by decide
 
+/-- Prior four-visit stalled-board output ledger, 64 boards, distinct digits. -/
+theorem s4_stalled_four_visit_arithmetic :
+    1278 = 1244 + 34 ∧
+    1244 = 1244 + 0 ∧
+    1244 ≤ 1795 := by decide
+
+/-- Extended sixteen-visit stalled-board output ledger, same 64 boards. -/
+theorem s4_stalled_sixteen_visit_arithmetic :
+    1447 = 1428 + 19 ∧
+    1428 = 1422 + 6 ∧
+    1422 ≤ 1795 := by decide
+
 /-- A four-class population split admits an exact constructive loss budget. -/
 theorem two_pair_merges (a b c d : Nat) :
     pairs (a + b) + pairs (c + d) =
@@ -81,6 +93,8 @@ theorem two_pair_merges (a b c d : Nat) :
 #print axioms nine_label_pairs
 #print axioms sixty_four_pairs
 #print axioms s4_stalled_eight_visit_arithmetic
+#print axioms s4_stalled_four_visit_arithmetic
+#print axioms s4_stalled_sixteen_visit_arithmetic
 #print axioms two_pair_merges
 
 end MathCan.PhaseGaugePairLedger
