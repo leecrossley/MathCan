@@ -134,7 +134,7 @@ def recoverableQuaternary (depth precision : Nat) : Nat :=
 
 theorem recoverable_quaternary_bound (depth precision : Nat) :
     recoverableQuaternary depth precision ≤ depth := by
-  simp [recoverableQuaternary]
+  exact Nat.min_le_left depth ((precision + 1) / 2)
 
 #print axioms quaternary_three_bit_normal_form
 #print axioms quaternary_three_bit_suffix_iff
