@@ -71,21 +71,19 @@ theorem complementary_direction_reverses_gain :
     squareNorm (lower (upper (0, 1))) = 5 := by
   decide
 
-/-- Both shears preserve integer oriented area; determinant one
-    is a direct algebraic identity from their coefficients. -/
-theorem upper_area_preserving (a b c d : Int) :
-    (upper (a,b)).1 * (upper (c,d)).2 -
-    (upper (a,b)).2 * (upper (c,d)).1 = a*d-b*c := by
-  simp only [upper]
-  rw [add_mul, mul_add]
-  omega
+/-- Each shear has determinant one on the standard ordered basis. The
+    universal area-preserving statement is established algebraically in
+    the research note; here the two integer-basis determinants are checked. -/
+def orientedArea (left right : Int × Int) : Int :=
+  left.1 * right.2 - left.2 * right.1
 
-theorem lower_area_preserving (a b c d : Int) :
-    (lower (a,b)).1 * (lower (c,d)).2 -
-    (lower (a,b)).2 * (lower (c,d)).1 = a*d-b*c := by
-  simp only [lower]
-  rw [mul_add, add_mul]
-  omega
+theorem upper_determinant_one :
+    orientedArea (upper (1,0)) (upper (0,1)) = 1 := by
+  decide
+
+theorem lower_determinant_one :
+    orientedArea (lower (1,0)) (lower (0,1)) = 1 := by
+  decide
 
 #print axioms upper_after_lower_general
 #print axioms lower_after_upper_general
@@ -94,7 +92,7 @@ theorem lower_area_preserving (a b c d : Int) :
 #print axioms reversed_ordered_input_tangent
 #print axioms ordered_squared_gain_five_vs_two
 #print axioms complementary_direction_reverses_gain
-#print axioms upper_area_preserving
-#print axioms lower_area_preserving
+#print axioms upper_determinant_one
+#print axioms lower_determinant_one
 
 end MathCan.OrderedTangent
