@@ -36,3 +36,4 @@ import MathCan.SpectralAliasing
 import MathCan.SpectralStability
 import MathCan.ContractionAliasing
 import MathCan.JacobianSecant
+import MathCan.PhaseMemory
