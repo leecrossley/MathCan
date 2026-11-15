@@ -33,3 +33,4 @@ import MathCan.TreeReconstruction
 import MathCan.CoarseStateDependence
 import MathCan.TacticFibers
 import MathCan.SpectralAliasing
+import MathCan.SpectralStability
