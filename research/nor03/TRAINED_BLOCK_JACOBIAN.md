@@ -38,6 +38,24 @@ If \(q=a+b<1\), this produces a rigorous *one-block* radial decay gate even when
 \]
 This proves (2), including the complexification required by Crouzeix. \(\square\)
 
+**Theorem 1b (direct interval-product numerical-range certificate).** If each entry of every true Jacobian \(J_j\) is contained in a closed real rational interval \(I_{j,ik}\), form the interval product
+\[
+I=I_{L-1}\cdots I_0
+\]
+by usual outward-rounded interval addition and multiplication. Denote its entry bounds by \(\underline I_{ik},\overline I_{ik}\). For each rational \(a>0\), define
+\[
+c_{ik}=\max\{|\underline I_{ik}-a\delta_{ik}|,
+                   |\overline I_{ik}-a\delta_{ik}|\}.
+\]
+Then
+\[
+\boxed{W_{\mathbb C}(D(F^L)(h_0))\subseteq
+\overline D\left(a,\sqrt{\sum_{i,k}c_{ik}^2}\right).}\tag{2a}
+\]
+**Proof.** Interval arithmetic encloses every entry of the actual product by induction on its factors, including all signed cancellations. Hence \(|A_{ik}-a\delta_{ik}|\le c_{ik}\). Squaring and summing controls the Frobenius norm, which dominates the operator norm, and therefore the complex numerical range. Rounding the final square root **upward** preserves validity. \(\square\)
+
+Equation (2a) can be substantially tighter than (1) when global norm bounds obscure nonnormal cancellation. The implementation computes both and retains their minimum. The direct method is still a sufficient enclosure and can fail even for a stable true block.
+
 **Theorem 2 (finite nonlinear shadowing budget).** Suppose \(h_0+e\in U\), \(\|e\|\le\delta_0\), and the segment of each perturbed and reference state remains in \(U\). Define by exact nonnegative recurrences
 \[
 \begin{aligned}
@@ -114,7 +132,7 @@ S_n=\sum_{k=0}^n\frac{x^k}{k!},\quad
 S_n\le e^x\le
 S_n+\frac{x^{n+1}/(n+1)!}{1-x/(n+2)}.
 \]
-Negative exponentials are enclosed by reciprocal intervals; sigmoid and tanh follow by monotonicity. The entire nine-step input prefix and zero-input continuation are propagated as rational intervals. At each of the next twelve states, a rational center and rational Jacobian approximation are computed; interval uncertainty plus the global \(M\)-bound covers the exact analytic Jacobian, including the error of rounding a hidden-state interval to its center. Matrix products are formed over \(\mathbb Q\), and every Frobenius square root rounds upward. The final enclosing disk radius \(b\) is rational.
+Negative exponentials are enclosed by reciprocal intervals; sigmoid and tanh follow by monotonicity. The entire nine-step input prefix and zero-input continuation are propagated as rational intervals. At each of the next twelve states, a rational center and rational Jacobian approximation are computed; interval uncertainty plus the global \(M\)-bound covers the exact analytic Jacobian, including the error of rounding a hidden-state interval to its center. Matrix products are formed over \(\mathbb Q\) and independently as direct outward-rounded interval products; every Frobenius square root rounds upward. The final enclosing disk radius \(b\) is rational and uses the tighter of the two proven envelopes.
 
 Six new deterministic post-training RRC-25 test-family inputs are generated directly, one per family, with independent seeds `compound25.SEED+903900+1009*i` and an explicit first-valid-source-case rule. This avoids generating unrelated negative and collision cohorts during a matrix-analysis job. The experiment uses public features only and fits no parameters or projections. The code checks distinct visible case contents within this cohort; overlap against the original 720 training examples has not been exhaustively audited. Each case retains its source-family label, hashed identifier, original native logit parity, and a certified pointwise block disk in the GitHub Actions artifact. The positive/negative contractivity fields are evaluated by exact rational comparison of \(a+b\) against one.
 
