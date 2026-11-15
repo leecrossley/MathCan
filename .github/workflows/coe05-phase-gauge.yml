@@ -8,7 +8,7 @@ on:
       - 'research/compactification/PHASE_GAUGE_CAPACITY.md'
       - '.github/workflows/coe05-phase-gauge.yml'
   push:
-    branches: [main]
+    branches: [main, feat/coe01-chromatic-observer-20261115]
     paths:
       - 'MathCan/PhaseGaugeCapacity.lean'
       - 'MathCan.lean'
