@@ -28,7 +28,7 @@ Then, for every nonnegative integer n,
 \boxed{ F_g^{\circ n}(g x)=g(F^{\circ n}(x)),\qquad h_g(F_g^{\circ n}(g x))=h(F^{\circ n}(x)). }
 \]
 
-**Proof.** At n=0 the identity is immediate. If it holds at n, compose `g F g^{-1}` with both sides, cancel `g^{-1}g`, and obtain the case n+1. Apply `h g^{-1}` to the resulting state identity. This proof holds for arbitrary state spaces and exact deterministic recurrences. The whole recursion and observer have to be transported consistently. `MathCan/GramianTransfer.lean` formalizes this theorem with `Equiv` and a separately defined finite iterate.
+**Proof.** At n=0 the identity is immediate. If it holds at n, compose `g F g^{-1}` with both sides, cancel `g^{-1}g`, and obtain the case n+1. Apply `h g^{-1}` to the resulting state identity. This proof holds for arbitrary state spaces and exact deterministic recurrences. The whole recursion and observer have to be transported consistently. `MathCan/GramianTransfer.lean` formalizes this theorem with a core `StateGauge` structure (two inverse maps and explicit inverse proofs) and a separately defined finite iterate.
 
 If `g(x)=Q^T x` with Q orthogonal and we write source-to-target **row** vectors as `x_s^T Q=x_t^T`, then the output Jacobians and Gramians transform as
 
