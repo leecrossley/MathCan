@@ -83,3 +83,5 @@ import MathCan.MatchedStepMargin
 import MathCan.ProjectorLeakage
 
 import MathCan.NOR15VerifierAlias
+
+import MathCan.NOR15MaskCapacity
