@@ -1,0 +1,46 @@
+name: PEF-03G formal four-corner causal interaction
+on:
+  pull_request:
+    paths:
+      - 'MathCan/CausalInteraction.lean'
+      - 'MathCan.lean'
+      - 'research/compactification/PEF03G_INTERACTION.md'
+      - 'tests/test_causal_interaction.py'
+      - '.github/workflows/pef03g-causal-interaction.yml'
+  push:
+    paths:
+      - 'MathCan/CausalInteraction.lean'
+      - 'MathCan.lean'
+      - 'research/compactification/PEF03G_INTERACTION.md'
+      - 'tests/test_causal_interaction.py'
+      - '.github/workflows/pef03g-causal-interaction.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-integer-oracle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s tests -p 'test_causal_interaction.py' -v
+  lean-kernel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          auto-config: false
+          build: true
+          build-args: MathCan
+          test: false
+          lint: false
+          use-mathlib-cache: false
+      - name: Exact PEF-03G axiom inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake env lean MathCan/CausalInteraction.lean | tee pef03g-axioms.txt
+          if grep -Eq 'sorryAx|ofReduceBool' pef03g-axioms.txt; then exit 1; fi
