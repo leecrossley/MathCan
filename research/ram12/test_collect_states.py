@@ -23,9 +23,9 @@ class RAM12Contracts(unittest.TestCase):
         self.assertEqual(x,['ram12_observe "RAM11F-009:00"','intro ram07_arg0',
                             'ram12_observe "RAM11F-009:01"','exact h'])
     def test_valid_full_native_goals(self):
-        parts=[dict(id='RAM11F-000:00',goals=['h : True\\n⊢ True'],definitions=['MathCan.x']),
+        parts=[dict(id='RAM11F-000:00',goals=['h : True\n⊢ True'],definitions=['MathCan.x']),
                dict(id='RAM11F-000:01',goals=['⊢ True'],definitions=[])]
-        log=''.join('sample.lean:3:7: info: RAM12_STATE_JSON:'+json.dumps(x,ensure_ascii=False)+'\\n' for x in parts)
+        log=''.join('sample.lean:3:7: info: RAM12_STATE_JSON:'+json.dumps(x,ensure_ascii=False)+'\n' for x in parts)
         self.assertEqual(read_markers(log,'RAM11F-000',['intro','exact h']),parts)
         with self.assertRaises(ValueError):read_markers(log,'RAM11F-000',['intro'])
         with self.assertRaises(ValueError):read_markers(log.replace('RAM11F-000:01','RAM11F-000:04'),'RAM11F-000',['intro','exact h'])
@@ -36,7 +36,7 @@ class RAM12Contracts(unittest.TestCase):
         with self.assertRaisesRegex(AssertionError,'conflicting Lean states'):
             aggregate([r,dict(r,proof_id='RAM11F-001',goals=['⊢ True'])])
     def test_original_proof_replaced_no_admitted_tactic(self):
-        original=b'namespace MathCan\\ntheorem x (h : True) : True := h\\nend MathCan\\n'
+        original=b'namespace MathCan\ntheorem x (h : True) : True := h\nend MathCan\n'
         text=source_for_case(original,'x',['exact h'],'RAM11F-000').decode()
         self.assertIn('ram12_observe "RAM11F-000:00"',text)
         self.assertIn('  exact h',text)
@@ -46,7 +46,7 @@ class RAM12Contracts(unittest.TestCase):
     def test_original_public_source_only(self):
         text=(HERE/'PREREGISTRATION.md').read_text()
         self.assertIn('c84e2025334e9a967c1297425a490f98d5b3d189',text)
-        self.assertIn('92',text if '92' in text else text+'92')  # historical existing corpus distinction
+        self.assertIn('76',text)
         self.assertIn('not',text.lower())
 
 if __name__=='__main__': unittest.main()
