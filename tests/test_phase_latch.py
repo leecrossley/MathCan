@@ -65,14 +65,41 @@ class PhaseLatchExactTests(unittest.TestCase):
             self.assertEqual(sqdist(z,y)<sqdist(z,x),d_c<d_a)
 
     def test_phase_contrasts_span_at_most_q_minus_one(self):
-        import numpy as np
-        for q in (2,3,5,8):
-            # Integer codewords in arbitrary ambient dimension 20.
-            code=np.random.default_rng(332+q).integers(-7,8,size=(q,20),dtype=np.int64)
-            anchor=code-code[0]
-            contrasts=np.array([code[i]-code[j] for i in range(q) for j in range(q)])
-            self.assertLessEqual(np.linalg.matrix_rank(contrasts.astype(float)),q-1)
-            self.assertTrue(all(np.array_equal(code[i]-code[j],anchor[i]-anchor[j])
+        from random import Random
+
+        def rank_over_q(integer_rows):
+            # Exact rational Gaussian elimination. The repository-wide
+            # mathematical oracle workflow is standard-library-only.
+            matrix = [[Q(v) for v in row] for row in integer_rows]
+            if not matrix:
+                return 0
+            pivot = 0
+            for col in range(len(matrix[0])):
+                candidate = next((i for i in range(pivot, len(matrix))
+                                  if matrix[i][col] != 0), None)
+                if candidate is None:
+                    continue
+                matrix[pivot], matrix[candidate] = matrix[candidate], matrix[pivot]
+                for i in range(pivot + 1, len(matrix)):
+                    factor = matrix[i][col] / matrix[pivot][col]
+                    if factor:
+                        for j in range(col, len(matrix[0])):
+                            matrix[i][j] -= factor * matrix[pivot][j]
+                pivot += 1
+                if pivot == len(matrix):
+                    break
+            return pivot
+
+        for q in (2, 3, 5, 8):
+            rng = Random(332 + q)
+            code = [[rng.randrange(-7, 8) for _ in range(20)] for _ in range(q)]
+            anchor = [[code[i][c] - code[0][c] for c in range(20)] for i in range(q)]
+            contrasts = [[code[i][c] - code[j][c] for c in range(20)]
+                         for i in range(q) for j in range(q)]
+            self.assertEqual(rank_over_q(contrasts), q - 1)
+            self.assertEqual(rank_over_q(contrasts), rank_over_q(anchor))
+            self.assertTrue(all(contrasts[i*q + j] ==
+                                [anchor[i][c] - anchor[j][c] for c in range(20)]
                                 for i in range(q) for j in range(q)))
 
     def test_finite_boolean_driven_phase(self):
