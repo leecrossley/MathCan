@@ -162,3 +162,7 @@ The [source-level 2-form spectral note](research/toe/TOE09_LORENTZ_BIVECTOR_SPEC
 ## NOR-05: period-one nonlinear convergence
 
 [Period-one exclusion and unstrided all-depth Lp compactification](research/nor05/PERIOD_ONE_NONLINEAR_COMPACTIFICATION.md) uses the NOR-04 unique fixed point of the twelve-step GRU block. A separately certified one-step image bound can force that fixed point to be stationary under the original recurrent step. `MathCan/PeriodOne.lean` proves the abstract commutation/uniqueness implication in Lean, with the new numeric test run by the companion [Compactification-Theory NOR-05 gym](https://github.com/MoralityLabAI/Compactification-Theory/tree/research/nor01-numerical-orbit-sketch-20261115/research/nor01_numerical_orbit_sketch). Its full real-analytic and Gaussian-Lp arguments remain written mathematical proofs.
+
+## NOR-06: finite basin capture
+
+[Finite-entry-to-infinite-horizon Lp theorem](research/nor06/FINITE_BASIN_CAPTURE.md) combines the NOR-04/05 nonlinear contraction ball with an independent interval-verified entry witness. The new `MathCan/BasinCapture.lean` proves the finite capture transfer and an external-state ambiguity counterexample. The [companion trained-GRU six-family survey](https://github.com/MoralityLabAI/Compactification-Theory/tree/research/nor06-trained-gru-basin-entry-20261115/research/nor01_numerical_orbit_sketch) is labeled FP64 discovery until a source-specific rational interval shadowing certificate passes.
