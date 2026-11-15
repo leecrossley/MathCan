@@ -70,9 +70,7 @@ theorem binary_lipschitz_forces_identification
     (hshort : distance < threshold)
     (hlip : (if a = b then 0 else threshold) ≤ distance) :
     a = b := by
-  by_contra hne
-  simp [hne] at hlip
-  omega
+  cases a <;> cases b <;> simp_all <;> omega
 
 /-- Two short edges force equality at their endpoints, including when
     their direct distance is large. This models a metric-quotient chain. -/
