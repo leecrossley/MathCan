@@ -5,6 +5,7 @@ on:
     paths:
       - 'MathCan.lean'
       - 'MathCan/ObservableFamily.lean'
+      - 'MathCan/ObservablePareto.lean'
       - 'MathCan/ObservableQuotient.lean'
       - 'research/compactification/observable_closure.py'
       - 'tests/test_observable_closure.py'
@@ -13,6 +14,7 @@ on:
     paths:
       - 'MathCan.lean'
       - 'MathCan/ObservableFamily.lean'
+      - 'MathCan/ObservablePareto.lean'
       - 'MathCan/ObservableQuotient.lean'
       - 'research/compactification/observable_closure.py'
       - 'tests/test_observable_closure.py'
@@ -48,6 +50,7 @@ jobs:
         run: |
           set -euo pipefail
           lake env lean MathCan/ObservableFamily.lean | tee nrf04-axioms.txt
+          lake env lean MathCan/ObservablePareto.lean | tee -a nrf04-axioms.txt
           if grep -Eq 'sorryAx|ofReduceBool' nrf04-axioms.txt; then
             exit 1
           fi

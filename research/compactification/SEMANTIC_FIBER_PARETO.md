@@ -80,3 +80,16 @@ This is the standard observability Krylov construction. NRF-04A extends it to a 
 ### Next measurable proposition
 
 For the saved 128x128 trained W1 and W2, test the exact/interval-certified dimension of the gate-family closure starting from the eight learned decoder rows, and repeat from matched random rows. Independent-gate closure may saturate the full space, in which case test a *restricted activation-gate family* on a preregistered reachable-state region, using reliable upper bounds. A smaller learned subspace should be promoted only if its measured held-out task utility and calibrated leakage bounds both meet the prespecified criterion.
+
+
+## Exact native-weight corroboration (NRF-04E)
+
+A separate binary32/finite-field audit of **all twelve source-hashed tied ToyLoop checkpoints** from MoralityLabAI/LoopedTransformers PR #56 establishes that every archived 128×128 W1 is invertible over the rationals and reals when its stored IEEE binary32 values are interpreted exactly. For each W1, multiply every entry by 2^149 to obtain an integer matrix; its determinant is nonzero modulo both independent primes 65,521 and 65,519. Each of the twelve W2 matrices has zero exact-zero entries.
+
+For every nonempty **coordinate projection** C (e.g. the first eight stored coordinates), C W2[:,j] is nonzero for every activation channel j. The first step of the NRF-04A closure therefore includes all 128 rows of W1, which have full row rank. Consequently the minimal globally invariant observation space containing such a coordinate selection has dimension 128. On the **full real state domain**, the invertible W1 makes the actual tanh derivative gates vary independently, so this is a necessary condition for an exact linear observable factor, as established by the full-domain qualification in NRF-04A.
+
+Evidence: [LoopedTransformers NRF-04 exact gate closure receipt](https://github.com/MoralityLabAI/LoopedTransformers/blob/research/crouzeix-fixedpoint-switching-20261115/experiments/numerical_range_fixed_point_v1/nrf04_exact_gate_closure.json) and its independent Python replay verifier with five local tests. The checkpoint repository is private, and this public mathematical note states only the dimension and modular-certificate summary.
+
+The theorem applies to the specified coordinate observations. It does **not** establish the minimal gate closure for every learned non-coordinate task decoder, nor the rank needed on a bounded reachable-state subset. An approximate quotient may remain useful despite failure of the exact full-domain criterion.
+
+**Lean scope:** MathCan/ObservablePareto.lean checks two cross-multiplied Pythagorean/Nat fragments of the rank-one Jordan frontier. Analytic real-norm, probability, and minimal rowspace assertions are supported by written proofs and the exact-rational Python oracle rather than a complete Lean formalization.

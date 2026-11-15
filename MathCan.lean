@@ -36,3 +36,4 @@ import MathCan.NumericalRangeSwitching
 import MathCan.GraphSwitching
 import MathCan.ObservableQuotient
 import MathCan.ObservableFamily
+import MathCan.ObservablePareto
