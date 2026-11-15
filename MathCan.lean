@@ -54,3 +54,4 @@ import MathCan.TemporalCutCapacity
 import MathCan.PhaseGaugeCapacity
 import MathCan.PhaseBlindObservers
 import MathCan.PhaseGaugePairLedger
+import MathCan.DihedralPhaseGauge
