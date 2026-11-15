@@ -35,3 +35,4 @@ import MathCan.TacticFibers
 import MathCan.PrecisionEntropy
 import MathCan.PrecisionEntropyRobust
 import MathCan.PrecisionEntropySchedule
+import MathCan.OrderedTangent
