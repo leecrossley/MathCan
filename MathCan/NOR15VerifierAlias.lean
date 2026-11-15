@@ -67,7 +67,7 @@ theorem disjoint_futures_force_one_failure
     futureA j = false ∨ futureB j = false := by
   cases ha : futureA j with
   | false =>
-      exact Or.inl ha
+      exact Or.inl rfl
   | true =>
       exact Or.inr (disjoint j ha)
 
