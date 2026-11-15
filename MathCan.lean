@@ -32,9 +32,15 @@ import MathCan.GraphAuthorization
 import MathCan.TreeReconstruction
 import MathCan.CoarseStateDependence
 import MathCan.TacticFibers
-
+import MathCan.PrecisionEntropy
+import MathCan.PrecisionEntropyRobust
+import MathCan.PrecisionEntropySchedule
+import MathCan.OrderedTangent
+import MathCan.CausalInteraction
+import MathCan.PairedHistory
+import MathCan.MemoryProjection
+import MathCan.GradientStability
 import MathCan.OrbitStitching
-
 import MathCan.FilteredOrbit
 import MathCan.BlockRemainder
 import MathCan.InvariantBall
