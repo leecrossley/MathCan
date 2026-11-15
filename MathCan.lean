@@ -57,3 +57,4 @@ import MathCan.PhaseGaugeCapacity
 import MathCan.PhaseBlindObservers
 import MathCan.PhaseGaugePairLedger
 import MathCan.DihedralPhaseGauge
+import MathCan.NOR09Asynchronous
