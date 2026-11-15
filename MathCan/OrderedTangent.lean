@@ -107,28 +107,31 @@ theorem hidden_probe_not_task_factorable
     _ = factor (head (state v)) := congrArg factor h_task
     _ = probe (state v) := (factors v).symm
 
-/-- The exact algebraic nullspace principle for any additive readout:
-    changing the hidden state by a kernel element leaves its image fixed. -/
+/-- Exact nullspace invariance under an additive readout. We state the
+    output right-zero identity explicitly to work in Lean's Init library. -/
 theorem additive_head_kernel_invariance
-    {Hidden Output : Type} [AddMonoid Hidden] [AddMonoid Output]
+    {Hidden Output : Type}
+    [Add Hidden] [Add Output] [Zero Output]
     (readout : Hidden → Output)
     (hadd : ∀ x y : Hidden, readout (x + y) = readout x + readout y)
+    (hright_zero : ∀ z : Output, z + 0 = z)
     (hidden displacement : Hidden)
     (hnull : readout displacement = 0) :
     readout (hidden + displacement) = readout hidden := by
-  rw [hadd hidden displacement, hnull, add_zero]
+  rw [hadd hidden displacement, hnull, hright_zero]
 
-/-- Adding a task-specific bias after a linear head preserves the
-    same nullspace guarantee. -/
+/-- An affine bias also leaves nullspace translations logit-invisible. -/
 theorem affine_head_kernel_invariance
-    {Hidden Output : Type} [AddMonoid Hidden] [AddMonoid Output]
+    {Hidden Output : Type}
+    [Add Hidden] [Add Output] [Zero Output]
     (readout : Hidden → Output) (bias : Output)
     (hadd : ∀ x y : Hidden, readout (x + y) = readout x + readout y)
+    (hright_zero : ∀ z : Output, z + 0 = z)
     (hidden displacement : Hidden)
     (hnull : readout displacement = 0) :
     readout (hidden + displacement) + bias =
       readout hidden + bias := by
-  rw [additive_head_kernel_invariance readout hadd hidden displacement hnull]
+  rw [additive_head_kernel_invariance readout hadd hright_zero hidden displacement hnull]
 
 #print axioms additive_head_kernel_invariance
 #print axioms affine_head_kernel_invariance
