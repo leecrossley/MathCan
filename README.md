@@ -166,3 +166,7 @@ The [source-level 2-form spectral note](research/toe/TOE09_LORENTZ_BIVECTOR_SPEC
 ## NOR-06: finite basin capture
 
 [Finite-entry-to-infinite-horizon Lp theorem](research/nor06/FINITE_BASIN_CAPTURE.md) combines the NOR-04/05 nonlinear contraction ball with an independent interval-verified entry witness. The new `MathCan/BasinCapture.lean` proves the finite capture transfer and an external-state ambiguity counterexample. The [companion trained-GRU six-family survey](https://github.com/MoralityLabAI/Compactification-Theory/tree/research/nor06-trained-gru-basin-entry-20261115/research/nor01_numerical_orbit_sketch) is labeled FP64 discovery until a source-specific rational interval shadowing certificate passes.
+
+## NOR-07: multibasin nonlinear compactification
+
+[Two-basin theorem and terminal-code obstruction](research/nor07/MULTIBASIN_COMPACTIFICATION.md) show how distinct locally attracting fixed points force a nonzero cross-basin additive error whenever a compact history code merges their terminal labels. The Init-only MathCan/MultiBasin.lean kernel-checks the finite disjoint-ball and code-collapse bounds; the analytic existence and finite-Lp embeddings remain written proofs. The [companion source-locked RRC25 second-attractor audit](https://github.com/MoralityLabAI/Compactification-Theory/tree/research/nor07-rrc25-two-attractors-20261115/research/nor01_numerical_orbit_sketch) tests the numerical squared-family candidate with rational intervals.
