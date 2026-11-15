@@ -37,3 +37,4 @@ import MathCan.PrecisionEntropyRobust
 import MathCan.PrecisionEntropySchedule
 import MathCan.OrderedTangent
 import MathCan.CausalInteraction
+import MathCan.PairedHistory
