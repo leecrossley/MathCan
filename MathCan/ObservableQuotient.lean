@@ -31,12 +31,12 @@ theorem factor_iff_fiber
       _ = obs (f b) := hg b
   · intro h
     classical
-    let section : Y → X := fun y => Classical.choose (surj y)
-    have hs (y : Y) : obs (section y) = y :=
+    let sec : Y → X := fun y => Classical.choose (surj y)
+    have hs (y : Y) : obs (sec y) = y :=
       Classical.choose_spec (surj y)
-    refine ⟨fun y => obs (f (section y)), ?_⟩
+    refine ⟨fun y => obs (f (sec y)), ?_⟩
     intro x
-    exact h (section (obs x)) x (hs (obs x))
+    exact h (sec (obs x)) x (hs (obs x))
 
 theorem factor_unique
     {X : Type u} {Y : Type v}
