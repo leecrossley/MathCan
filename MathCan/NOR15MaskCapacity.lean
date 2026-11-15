@@ -38,7 +38,7 @@ theorem partition_success_bounded_by_signature_capacities
   unfold groupSuccessTotal
   induction groups with
   | nil =>
-      rfl
+      simp
   | cons g rest ih =>
       simp only [List.map_cons, List.sum_cons]
       exact Nat.add_le_add (hCap g (choose g)) ih
