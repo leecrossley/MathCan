@@ -99,10 +99,10 @@ def render_source(original: str, theorem: str, actions: list[str]) -> str:
     start = starts[0]
     boundary = next((i for i in range(start+1,len(lines))
                      if END_SOURCE.match(lines[i])), len(lines))
-    # The first := by belongs to the theorem header. Later nested 'have := by'
-    # clauses are part of its old proof and must be removed, not parsed.
-    markers = [(i, line.index(':= by')) for i,line in enumerate(lines[start:boundary],start)
-               if ':= by' in line]
+    # Replace both tactic-mode `:= by` and term-mode `:= expr` proofs.
+    # Later nested `have := by` clauses are part of the old proof.
+    markers = [(i, line.index(':=')) for i,line in enumerate(lines[start:boundary],start)
+               if ':=' in line]
     if not markers:
         raise ValueError(f'original theorem proof marker absent: {theorem}')
     marker, at = markers[0]

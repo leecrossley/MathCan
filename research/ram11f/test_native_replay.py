@@ -52,11 +52,25 @@ end X
         self.assertIn('theorem alpha\n    (x : Nat)\n    (h : x=x) :\n    x=x := by\n  exact h',result)
         self.assertNotIn('  rfl',result)
 
+    def test_term_style_original_proof_replaced_without_reference_term(self):
+        source='''namespace X
+
+theorem term_demo (h : True) : True := h
+
+theorem later : True := by
+  trivial
+end X
+'''
+        result=render_source(source,'term_demo',['exact h'])
+        self.assertIn('theorem term_demo (h : True) : True := by\n  exact h',result)
+        self.assertNotIn('True := h',result)
+        self.assertIn('theorem later : True := by\n  trivial',result)
+
     def test_missing_root_denied(self):
         with self.assertRaises(ValueError):render_source(EXAMPLE,'unrelated',['rfl'])
 
     def test_missing_proof_marker_denied(self):
-        with self.assertRaises(ValueError):render_source('theorem X : True := trivial\n','X',['rfl'])
+        with self.assertRaises(ValueError):render_source('theorem X : True\n','X',['rfl'])
 
     def test_axiom_inventory_empty(self):
         log='RAM11F_AXIOMS_BEGIN_20261115\n\'MathCan.foo\' does not depend on any axioms\nRAM11F_AXIOMS_END_20261115\n'
