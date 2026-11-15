@@ -73,10 +73,35 @@ This result makes an additional obstruction explicit: *short-edge connectivity c
 
 For robust Hamming-margin r observables the same forced-identification quotient applies, because the output ℓ∞ distance of any distinct binary codes remains 1. The COE-2 color-repetition upper bound therefore holds on `G_Q` whenever the instance is feasible. An ambient Lipschitz extension takes values in the continuous cube; its intermediate points may have fractional coordinates, as required by continuity on connected Hilbert spaces.
 
+## The exact critical Lipschitz constant and width staircase
+
+Let `rho(u,v)` denote the **minimum bottleneck distance** between distinct vertices of a finite metric space:
+
+```
+    rho(u,v) = min_{finite paths u=x0,...,xm=v}
+                         max_{0<=i<m} d(x_i,x_(i+1)).
+```
+
+For each evaluator edge `uv`, this is the smallest maximum jump needed to connect its endpoints. Since X is finite and has strictly positive distances between distinct points, `rho(u,v)>0` for `u!=v`. The complete weighted graph supplies a path, so the minimum is attained.
+
+**Theorem COE-4 (exact feasible Lipschitz threshold).** For a nonempty evaluator edge set E, define
+
+```
+                       L_* = max_{uv in E} (1/rho(u,v)).
+```
+
+A finite-width, binary, `L`-Lipschitz evaluator observer exists **exactly when `L>=L_*`**, with equality included. If E is empty, every `L>=0` permits a constant observer; take `L_*=0`. For positive L in the feasible regime, define `k(L)` as the minimum bit count. Then `k(L)` is a nonincreasing, integer-valued staircase; its only possible jump locations lie among the reciprocals `1/d(x,y)` of the positive pairwise metric distances. The values at the jump locations use the **new**, weaker equivalence relation.
+
+*Proof.* Two vertices lie in one connected component of `H_L` if and only if they admit a path all of whose edge distances are **strictly** less than `1/L`. By finiteness, this holds exactly when `rho(u,v)<1/L`. Theorem COE-3 makes every evaluator edge feasible precisely when `rho(u,v)>=1/L`, i.e. `L>=1/rho(u,v)`. Taking their maximum gives the critical constant. At equality the strict short-edge condition excludes a bottleneck edge of length exactly `1/L`, so feasibility holds. If `L2>=L1>0`, any binary observer that satisfies the L1-Lipschitz bound also satisfies the L2 bound; minimizing over a larger feasible set shows `k(L2)<=k(L1)`. Finally `H_L` changes only when the strict inequality `d(x,y)<1/L` switches truth value at `L=1/d(x,y)`. Since G stays fixed, its quotient and hence chromatic width stay fixed between consecutive such thresholds. ∎
+
+**Exact rational witnesses.** On line samples `0,3/5,6/5`, the bottleneck path from first to last has jump size `3/5`; `rho=3/5`, so an evaluator separating the endpoints has the exact critical constant `L_*=5/3`. At `L=49/30` it is impossible, while at `L=5/3` it admits a one-bit observer. A second example has line samples `0,3,6,1/5` and evaluator path edges `(0,1),(1,2),(2,3)`. At `L=1`, short-distance identification merges vertices 0 and 3, creating a triangle in the quotient and requiring two bits. At `L=5`, all four vertices separate and one bit suffices. The exact-rational Python oracle computes `rho` with min/max Floyd-Warshall and checks these cases separately from the observer solver. A further exhaustive four-state harness compares the bottleneck threshold with direct feasibility for each of 64 evaluator graphs across rational Lipschitz values, including exact critical equality.
+
+These statements concern **finite sampled metric spaces** and binary `ell_infinity` observables. The minimax bottleneck and graph-coloring principles are standard mathematical constructions; the combined evaluator-specific formulation is a research contribution to this program, with literature-wide priority unassessed.
+
 ## Scope and limitations
 
 The graph represents **evaluator-relevant pairs**, rather than all Hilbert distances. The COE-3 quotient incorporates local metric constraints before coding. Two vertices with the same observer code may be geometrically separated, and the extended observer need not have a Lipschitz inverse. The construction is thus compatible with the obstruction in family 098. Finite-dimensional ℓ1 extension with optimal universal constant, all graphs' robust coding numbers and the genuine compact doubling construction of family 098 remain separate questions.
 
 ## Reproduce
 
-The companion reference in `MoralityLabAI/Compactification-Theory/research/chromatic_observer_gym_v1` implements exact graph coloring, minimal robust observer search, the explicit extension and regression tests. Its deterministic suite enumerates all 64 simple graphs on four vertices and checks metric-quotient equivalence, transitive forced identifications and strict threshold behavior. The MathCan Lean module uses the repository's `leanprover/lean4:v4.35.0` `Init` toolchain and reports the transitive axioms of each finite lemma. Source results are not imported as axioms.
+The companion reference in `MoralityLabAI/Compactification-Theory/research/chromatic_observer_gym_v1` implements exact graph coloring, minimal robust observer search, the explicit extension and regression tests. Its deterministic suite enumerates all 64 simple graphs on four vertices and checks metric-quotient equivalence, transitive forced identifications strict threshold behavior, exact critical Lipschitz values and a decreasing chromatic-width staircase. The MathCan Lean module uses the repository's `leanprover/lean4:v4.35.0` `Init` toolchain and reports the transitive axioms of each finite lemma. Source results are not imported as axioms.
