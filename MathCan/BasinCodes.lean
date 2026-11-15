@@ -56,13 +56,14 @@ theorem separated_basins_require_injective_codes
       radius i + radius j + error < d (anchor i) (anchor j)) :
     Function.Injective code := by
   intro i j hcode
-  by_contra hij
-  have hbound :=
-    shared_code_forces_separation_budget
-      d tri anchor terminal code radius error
-      nearLeft nearRight sameCode i j hcode
-  have hsep := separated i j hij
-  omega
+  by_cases hij : i = j
+  · exact hij
+  · have hbound :=
+      shared_code_forces_separation_budget
+        d tri anchor terminal code radius error
+        nearLeft nearRight sameCode i j hcode
+    have hsep := separated i j hij
+    omega
 
 /-- A finite-level incompatibility witness: identifying two different
 source basins violates their strict metric-separation margin. -/
