@@ -49,3 +49,11 @@ import MathCan.BasinCapture
 import MathCan.MultiBasin
 import MathCan.NOR07Volterra
 import MathCan.BasinCodes
+import MathCan.ChromaticObservers
+import MathCan.ChromaticCutCodes
+import MathCan.SoftObserverPrecision
+import MathCan.TemporalCutCapacity
+import MathCan.PhaseGaugeCapacity
+import MathCan.PhaseBlindObservers
+import MathCan.PhaseGaugePairLedger
+import MathCan.DihedralPhaseGauge
