@@ -1,0 +1,39 @@
+name: PEF-05 gradient projection pure-math audits
+on:
+  pull_request:
+    paths:
+      - 'MathCan/MemoryProjection.lean'
+      - 'MathCan.lean'
+      - 'research/compactification/PEF05_GRADIENT_PROJECTION.md'
+      - 'tests/test_memory_projection.py'
+      - '.github/workflows/pef05-memory-projection.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  exact-integer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s tests -p 'test_memory_projection.py' -v
+  lean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          auto-config: false
+          build: true
+          build-args: MathCan
+          test: false
+          lint: false
+          use-mathlib-cache: false
+      - name: Audit new theorem axioms
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake env lean MathCan/MemoryProjection.lean | tee pef05-memory-axioms.txt
+          if grep -Eq 'sorryAx|ofReduceBool' pef05-memory-axioms.txt; then exit 1; fi
