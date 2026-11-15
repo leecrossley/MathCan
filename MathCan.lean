@@ -47,6 +47,8 @@ import MathCan.InvariantBall
 import MathCan.PeriodOne
 import MathCan.BasinCapture
 import MathCan.MultiBasin
+import MathCan.NOR07Volterra
+import MathCan.BasinCodes
 import MathCan.ChromaticObservers
 import MathCan.ChromaticCutCodes
 import MathCan.SoftObserverPrecision
