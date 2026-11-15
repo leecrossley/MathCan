@@ -31,7 +31,7 @@ def shear (b : Nat) : Block2 := ⟨1, b, 0, 1⟩
 /-- In a unipotent shear, the two source contributions add. -/
 theorem shear_transport (b c : Nat) :
     (blockMul (shear b) (shear c)).vd = b + c := by
-  simp [blockMul, shear]
+  simp [blockMul, shear, Nat.add_comm]
 
 #print axioms visibleDark_transport
 #print axioms shear_transport
