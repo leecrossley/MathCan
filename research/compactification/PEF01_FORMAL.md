@@ -90,3 +90,21 @@ No sorry and no custom theorem-level axioms are introduced.
 
 The companion CPU-only oracle/experiment is under
 MoralityLabAI/Compactification-Theory/research/precision_entropy_frontier/.
+
+
+## PEF-02 and PEF-02S continuation
+
+The new [PEF02_FORMAL.md](PEF02_FORMAL.md) proves the constant-width
+history separation theorem and develops recurrent-floor commutation,
+affine gauge calibration and exact Markov-prior decoder accuracy.
+MathCan/PrecisionEntropyRobust.lean formalizes finite witnesses and
+general natural-number noise-margin arithmetic.
+
+[PEF02S_FORMAL.md](PEF02S_FORMAL.md) proves the ordered mixed-contraction
+gap and documents two identical-total-contraction schedules with a
+19/3 ratio of geometric suffix margins. Finite Lean certificates
+appear in MathCan/PrecisionEntropySchedule.lean.
+
+The general all-k mixed contraction theorem is a paper-level proof
+with exhaustive exact-arithmetic verification over a bounded grid.
+The Lean files certify stated finite instances.
