@@ -56,11 +56,11 @@ theorem refined_tail_stitch
     exact Nat.le_max_left E (max (E0 + B) L)
   have hCross : E0 + B ≤ optimalBudget E E0 B L := by
     change E0 + B ≤ max E (max (E0 + B) L)
-    exact (Nat.le_max_left (E0 + B) L).trans
+    exact Nat.le_trans (Nat.le_max_left (E0 + B) L)
       (Nat.le_max_right E (max (E0 + B) L))
   have hL : L ≤ optimalBudget E E0 B L := by
     change L ≤ max E (max (E0 + B) L)
-    exact (Nat.le_max_right (E0 + B) L).trans
+    exact Nat.le_trans (Nat.le_max_right (E0 + B) L)
       (Nat.le_max_right E (max (E0 + B) L))
   intro i j
   by_cases hi : i ≤ cutoff
