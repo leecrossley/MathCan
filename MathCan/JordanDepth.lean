@@ -21,7 +21,7 @@ def upperPower (b : Nat) : Nat → Nat × Nat
 theorem upperPower_closed (b n : Nat) :
     upperPower b n = (1, n * b) := by
   induction n with
-  | zero => rfl
+  | zero => simp [upperPower]
   | succ n ih =>
     simp [upperPower, upperMul, ih, Nat.succ_mul, Nat.add_comm]
 
