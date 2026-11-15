@@ -1,7 +1,7 @@
 # SPC-02: robust sparse phase observability and deferred-query state cost
 
 **15 November 2026.** A new finite-dimensional mathematical synthesis extending
-[SPC-01](SPC-01.md). Theorems 1–5 below are derived here with proofs. No
+[SPC-01](SPC-01.md). Theorems 1–4 and Proposition 5 below are derived here with proofs. No
 independent priority review has been conducted. The arbitrary-complex-field
 proofs are paper arguments; `MathCan/SpectralStability.lean` formally checks
 finite-field specializations and a general injectivity lemma.
@@ -267,3 +267,38 @@ under matched noise, with held-out phase prediction, and label every
 run by its spectral sparsity tail. An excess-error result under
 matched residual and noise would falsify the proposed applicability of
 the phase-sparse model to that network family.
+
+
+## 8. Proposition 5: DC-invariant periodic residual identity
+
+Let `H` be any finite-dimensional real or complex Hilbert space of
+length-`T` multichannel traces. Assume `n` divides `T`. Let `P` be the
+orthogonal projection onto traces periodic with period `n`, and `C`
+the orthogonal projection onto traces constant over time. Since
+`range(C)` is contained in `range(P)`, we have `PC=CP=C`.
+For a trajectory `u` write
+
+\[
+\rho=\frac{\|(I-P)u\|}{\|u\|},\quad
+\rho_{\mathrm{dyn}}=\frac{\|(I-P)(u-Cu)\|}{\|u-Cu\|},\quad
+\alpha=\frac{\|Cu\|^2}{\|u\|^2}.
+\]
+
+**Proposition.** Whenever `u` has a nonzero time-varying component,
+
+\[
+\boxed{\rho_{\mathrm{dyn}}=\frac{\rho}{\sqrt{1-\alpha}}.}
+\tag{12}
+\]
+
+**Proof.** The nested projections satisfy `(I-P)C=0`, so
+`(I-P)(u-Cu)=(I-P)u`. Orthogonality of `C` gives
+`||u-Cu||²=||u||²-||Cu||²`. Divide the same residual norm by each
+of the two trajectory norms. QED.
+
+A large constant prompt embedding can make `alpha` approach one,
+and hence make an apparently small raw periodic residual uninformative
+about the recurrence's changing component. The native LoopedChase
+smoke now records both residuals, their DC-energy ratio, and the
+centered spectral-sparsity tail. This identity is an exact linear
+algebra statement independent of the Fourier sparsity premise.
