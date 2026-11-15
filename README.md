@@ -150,3 +150,7 @@ The [source-level 2-form spectral note](research/toe/TOE09_LORENTZ_BIVECTOR_SPEC
 ## NOR-02: filtered orbit curvature and complete Crouzeix
 
 [Disk extremal, complete operator-valued filter and all-horizon Lp theorem](research/nor02/FILTERED_ORBIT_CURVATURE.md), including an exact condition for attaining the disk extremal, dimension-independent noncommuting coefficient channels, and an optimized anchor-aware stitching error. The new Init-only Lean file checks the integer-metric stitching lemma and noncommutation; the geometric and analytic imports remain paper-level. The [companion 128-to-24 filtered-orbit gym](https://github.com/MoralityLabAI/Compactification-Theory/tree/research/nor01-numerical-orbit-sketch-20261115/research/nor01_numerical_orbit_sketch) uses exact rational disk geometry and seeded finite controls.
+
+## NOR-03: source-locked nonlinear block Jacobian
+
+[Trained GRU numerical-range and quadratic shadowing theorem](research/nor03/TRAINED_BLOCK_JACOBIAN.md): an analytic product/tail certificate for a nonlinear recurrent block, with rational interval arithmetic applied to the existing source-locked RRC-25 model. `MathCan/BlockRemainder.lean` kernel-checks the discrete quadratic perturbation recursion. The continuous Jacobian, Hilbert numerical-range, Gaussian and \(L_p\) arguments remain written mathematics; the applied [trained checkpoint audit](https://github.com/MoralityLabAI/Compactification-Theory/tree/research/nor01-numerical-orbit-sketch-20261115/research/nor01_numerical_orbit_sketch) is verified independently in GitHub Actions.
