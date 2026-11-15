@@ -72,6 +72,7 @@ jobs:
           lake env lean MathCan/OrbitStitching.lean | tee -a mathcan-axioms.txt
           lake env lean MathCan/FilteredOrbit.lean | tee -a mathcan-axioms.txt
           lake env lean MathCan/BlockRemainder.lean | tee -a mathcan-axioms.txt
+          lake env lean MathCan/InvariantBall.lean | tee -a mathcan-axioms.txt
           lake env lean MathCan/DeletionMemory.lean | tee -a mathcan-axioms.txt
           lake env lean MathCan/GraphAuthorization.lean | tee -a mathcan-axioms.txt
           lake env lean MathCan/TreeReconstruction.lean | tee -a mathcan-axioms.txt
