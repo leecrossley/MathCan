@@ -87,3 +87,5 @@ import MathCan.NOR15VerifierAlias
 import MathCan.NOR15MaskCapacity
 
 import MathCan.NOR16PublicQueryConsensus
+
+import MathCan.NOR16PublicOutputCertificate
