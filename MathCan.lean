@@ -46,3 +46,4 @@ import MathCan.BlockRemainder
 import MathCan.InvariantBall
 import MathCan.PeriodOne
 import MathCan.BasinCapture
+import MathCan.MultiBasin
