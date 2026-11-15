@@ -69,3 +69,11 @@ import MathCan.ObserverPermutationNull
 import MathCan.NOR09Asynchronous
 import MathCan.DeferredObservability
 import MathCan.ObserverLabelAlignment
+import MathCan.NumericalRangeSwitching
+import MathCan.GraphSwitching
+import MathCan.ObservableQuotient
+import MathCan.ObservableFamily
+import MathCan.ObservablePareto
+import MathCan.GateFamilyNoGo
+import MathCan.JordanDepth
+import MathCan.SuffixTransport
