@@ -52,3 +52,4 @@ import MathCan.ChromaticCutCodes
 import MathCan.SoftObserverPrecision
 import MathCan.TemporalCutCapacity
 import MathCan.PhaseGaugeCapacity
+import MathCan.PhaseBlindObservers
