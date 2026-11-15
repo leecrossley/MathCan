@@ -39,3 +39,4 @@ import MathCan.JacobianSecant
 import MathCan.PhaseMemory
 import MathCan.PhaseLatch
 import MathCan.PhaseObservability
+import MathCan.GramianTransfer
