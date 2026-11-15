@@ -23,11 +23,11 @@ def iterateState {α : Type u} (f : α → α) : Nat → α → α
   | n + 1, x => iterateState f n (f x)
 
 /-- Transport the whole recurrent update through a state-coordinate equivalence. -/
-def transport {α : Type u} (g : α ≃ α) (f : α → α) : α → α :=
+def transport {α : Type u} (g : Equiv α α) (f : α → α) : α → α :=
   fun y => g (f (g.symm y))
 
 /-- The entire finite recurrent orbit is equivariant under state relabeling. -/
-theorem transport_iterate {α : Type u} (g : α ≃ α) (f : α → α)
+theorem transport_iterate {α : Type u} (g : Equiv α α) (f : α → α)
     (n : Nat) (x : α) :
     iterateState (transport g f) n (g x) = g (iterateState f n x) := by
   induction n generalizing x with
@@ -42,7 +42,7 @@ theorem transport_iterate {α : Type u} (g : α ≃ α) (f : α → α)
 
 /-- A co-transported observer gives identical outputs at every future time. -/
 theorem observable_transport {α : Type u} {β : Type v}
-    (g : α ≃ α) (f : α → α) (readout : α → β)
+    (g : Equiv α α) (f : α → α) (readout : α → β)
     (n : Nat) (x : α) :
     readout (g.symm (iterateState (transport g f) n (g x))) =
       readout (iterateState f n x) := by
