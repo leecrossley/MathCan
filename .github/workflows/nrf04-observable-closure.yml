@@ -13,6 +13,9 @@ on:
       - 'research/compactification/global_gate_nogo.py'
       - 'tests/test_global_gate_nogo.py'
       - 'MathCan/JordanDepth.lean'
+      - 'MathCan/SuffixTransport.lean'
+      - 'research/compactification/suffix_leakage_transport.py'
+      - 'tests/test_suffix_leakage_transport.py'
       - 'research/compactification/jordan_depth_frontier.py'
       - 'tests/test_jordan_depth_frontier.py'
       - '.github/workflows/nrf04-observable-closure.yml'
@@ -28,6 +31,9 @@ on:
       - 'research/compactification/global_gate_nogo.py'
       - 'tests/test_global_gate_nogo.py'
       - 'MathCan/JordanDepth.lean'
+      - 'MathCan/SuffixTransport.lean'
+      - 'research/compactification/suffix_leakage_transport.py'
+      - 'tests/test_suffix_leakage_transport.py'
       - 'research/compactification/jordan_depth_frontier.py'
       - 'tests/test_jordan_depth_frontier.py'
       - '.github/workflows/nrf04-observable-closure.yml'
@@ -44,7 +50,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m unittest tests.test_observable_closure tests.test_global_gate_nogo tests.test_jordan_depth_frontier -v
+      - run: python -m unittest tests.test_observable_closure tests.test_global_gate_nogo tests.test_jordan_depth_frontier tests.test_suffix_leakage_transport -v
 
   lean-abstract-family:
     runs-on: ubuntu-latest
@@ -64,6 +70,7 @@ jobs:
           lake env lean MathCan/ObservableFamily.lean | tee nrf04-axioms.txt
           lake env lean MathCan/GateFamilyNoGo.lean | tee -a nrf04-axioms.txt
           lake env lean MathCan/JordanDepth.lean | tee -a nrf04-axioms.txt
+          lake env lean MathCan/SuffixTransport.lean | tee -a nrf04-axioms.txt
           lake env lean MathCan/ObservablePareto.lean | tee -a nrf04-axioms.txt
           if grep -Eq 'sorryAx|ofReduceBool' nrf04-axioms.txt; then
             exit 1
