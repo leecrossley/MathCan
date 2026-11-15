@@ -39,7 +39,9 @@ theorem scalar_perturbation_envelope
       have bound : L * distance n + eps ≤
           L * errorEnvelope initial L eps n + eps :=
         Nat.add_le_add_right (Nat.mul_le_mul_left L ih) eps
-      exact (hstep n).trans (by simpa [errorEnvelope] using bound)
+      have hh := hstep n
+      change distance (n+1) ≤ L * errorEnvelope initial L eps n + eps
+      omega
 
 /-- A deterministic starting state with exact equality and the same
     update mapping has zero envelope when local numerical discrepancy
