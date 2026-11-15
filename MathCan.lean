@@ -81,3 +81,5 @@ import MathCan.NOR13GateOrder
 import MathCan.NOR15TrajectoryObservability
 import MathCan.MatchedStepMargin
 import MathCan.ProjectorLeakage
+
+import MathCan.NOR15VerifierAlias
