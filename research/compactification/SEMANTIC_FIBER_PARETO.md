@@ -93,3 +93,16 @@ Evidence: [LoopedTransformers NRF-04 exact gate closure receipt](https://github.
 The theorem applies to the specified coordinate observations. It does **not** establish the minimal gate closure for every learned non-coordinate task decoder, nor the rank needed on a bounded reachable-state subset. An approximate quotient may remain useful despite failure of the exact full-domain criterion.
 
 **Lean scope:** MathCan/ObservablePareto.lean checks two cross-multiplied Pythagorean/Nat fragments of the rank-one Jordan frontier. Analytic real-norm, probability, and minimal rowspace assertions are supported by written proofs and the exact-rational Python oracle rather than a complete Lean formalization.
+
+
+## NRF-04F: exact certificate for the learned eight-dimensional observation
+
+The coordinate-only result in NRF-04E has been extended to the **specific supervised rank-eight subspaces** trained in the frozen decoder experiment. For every one of the twelve checkpoints, the first basis vector u of the supervised observation was recorded as 128 canonical IEEE binary64 hex patterns. This vector lies in the learned observation rowspace.
+
+For each stored binary32 W2 and each activation channel j, compute the exact dyadic dot product u W2[:,j]. Multiplication by 2^(1074+149) produces an integer, and reducing it modulo 65,521 and 65,519 yields a nonzero value for **all 128 channels in all twelve models**. This proves the true real dot product is nonzero, independently of any floating tolerance. As the native W1 integer-scaled determinants are nonzero modulo both primes, the first closure step already spans all 128 dimensions.
+
+Thus, under the stated **full-state-domain** tanh assumptions and the *exact recorded binary64* supervised observation vectors, the minimal globally closed linear observation containing each trained eight-dimensional subspace has dimension 128. An induced exact nonlinear update on only those eight observed coordinates cannot exist globally for these particular maps.
+
+Evidence: [learned projection exact closure receipt](https://github.com/MoralityLabAI/LoopedTransformers/blob/research/crouzeix-fixedpoint-switching-20261115/experiments/numerical_range_fixed_point_v1/nrf04_learned_projection_exact_closure.json), which preserves the full basis vector bits and first-eight modular residues, and the independent verifier research_gym/analysis/nrf04_verify_learned_projection.py. Four local verifier tests check dyadic scaling, signed zeros, cancellation and failure on invalid encodings.
+
+The basis vectors came from a deterministic JavaScript float64 realization of the preregistered teacher decoder. A fresh PyTorch-native replay can differ in last-bit rounding; its own exact binary64 basis vectors must be sealed and checked separately before extending the certificate to that implementation. The statement concerns the recorded trained subspaces and full-domain exact observation factors. It leaves the finite reachable set, approximate factorization, and nonlinear observation choices open.
