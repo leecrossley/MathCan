@@ -9,8 +9,6 @@ on:
       - 'tests/test_graph_switching.py'
       - 'research/compactification/barycentric_fixedpoints.py'
       - 'tests/test_barycentric_fixedpoints.py'
-      - 'research/compactification/barycentric_fixedpoints.py'
-      - 'tests/test_barycentric_fixedpoints.py'
       - '.github/workflows/nrf02-graph-switching.yml'
   pull_request:
     paths:
@@ -18,6 +16,8 @@ on:
       - 'MathCan.lean'
       - 'research/compactification/graph_switching.py'
       - 'tests/test_graph_switching.py'
+      - 'research/compactification/barycentric_fixedpoints.py'
+      - 'tests/test_barycentric_fixedpoints.py'
       - '.github/workflows/nrf02-graph-switching.yml'
   workflow_dispatch:
 
