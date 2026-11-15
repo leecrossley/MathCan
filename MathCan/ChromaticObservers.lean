@@ -67,7 +67,7 @@ theorem erasure_margin_arithmetic (margin erased : Nat)
     `margin * k` and supplies the stated finite upper budget. -/
 theorem repetition_width (k margin : Nat) :
     k * margin = margin * k := by
-  omega
+  exact Nat.mul_comm k margin
 
 #print axioms robustSixCode_in_range
 #print axioms robustSixCode_margin_three
