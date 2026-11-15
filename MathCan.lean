@@ -34,3 +34,4 @@ import MathCan.CoarseStateDependence
 import MathCan.TacticFibers
 import MathCan.PrecisionEntropy
 import MathCan.PrecisionEntropyRobust
+import MathCan.PrecisionEntropySchedule
