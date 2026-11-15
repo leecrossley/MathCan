@@ -154,3 +154,7 @@ The [source-level 2-form spectral note](research/toe/TOE09_LORENTZ_BIVECTOR_SPEC
 ## NOR-03: source-locked nonlinear block Jacobian
 
 [Trained GRU numerical-range and quadratic shadowing theorem](research/nor03/TRAINED_BLOCK_JACOBIAN.md): an analytic product/tail certificate for a nonlinear recurrent block, with rational interval arithmetic applied to the existing source-locked RRC-25 model. `MathCan/BlockRemainder.lean` kernel-checks the discrete quadratic perturbation recursion. The continuous Jacobian, Hilbert numerical-range, Gaussian and \(L_p\) arguments remain written mathematics; the applied [trained checkpoint audit](https://github.com/MoralityLabAI/Compactification-Theory/tree/research/nor01-numerical-orbit-sketch-20261115/research/nor01_numerical_orbit_sketch) is verified independently in GitHub Actions.
+
+## NOR-04: nonlinear invariant ball
+
+[Validated all-depth nonlinear compactification theorem](research/nor04/NONLINEAR_INVARIANT_BALL.md) applies a source-locked rational interval certificate to the trained RRC-25 GRU. A 12-step nonlinear map is contractive on a radius-1e-11 ball, with \(K\le0.928242792263\) and exact invariant margin. [GitHub Actions run 43691939525](https://github.com/MoralityLabAI/Compactification-Theory/actions/runs/43691939525) passed. The new `MathCan/InvariantBall.lean` kernel-checks the receipt's exact clearance and finite scaled invariance arithmetic; Banach and \(L_p\) corollaries remain written proofs.
