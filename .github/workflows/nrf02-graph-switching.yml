@@ -7,6 +7,10 @@ on:
       - 'MathCan.lean'
       - 'research/compactification/graph_switching.py'
       - 'tests/test_graph_switching.py'
+      - 'research/compactification/barycentric_fixedpoints.py'
+      - 'tests/test_barycentric_fixedpoints.py'
+      - 'research/compactification/barycentric_fixedpoints.py'
+      - 'tests/test_barycentric_fixedpoints.py'
       - '.github/workflows/nrf02-graph-switching.yml'
   pull_request:
     paths:
@@ -28,7 +32,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m unittest tests.test_crouzeix_switching tests.test_graph_switching -v
+      - run: python -m unittest tests.test_crouzeix_switching tests.test_graph_switching tests.test_barycentric_fixedpoints -v
 
   lean-cross-multiplied-path:
     runs-on: ubuntu-latest

@@ -66,3 +66,57 @@ Assume additionally that C is compact in R^d, that every edge map takes C into i
 The independent oracle is research/compactification/graph_switching.py. Six unittest methods test 256 two-node and 729 three-node graphs by independent simple-cycle enumeration, exhaustive weighted path comparisons, 1,296 perturbation recurrences, strict hyperplane equality, and cover counts. MathCan/GraphSwitching.lean proves the cross-multiplied **two-edge arithmetic lemma** using only Init. Its kernel checking does not formalize the full graph equivalence or analytic norm bound.
 
 The paired application is in MoralityLabAI/LoopedTransformers PR #56. It uses rational 2x2 Jordan matrices with exact numerical-range disks. Native neural weight bounds, guard provenance, and improvement in benchmark capability remain open experimental questions. Published global novelty remains subject to literature audit.
+
+
+## NRF-02D. Barycentric graph fixed points and smooth selection
+
+This section uses both selected OpenAI papers directly. Its fixed-point existence claim is **conditional on** the general reflexive-space theorem of OpenAI family 328; it also follows classically in our finite-dimensional toy by Brouwer. The rest is an independently proved conditional comparison theorem.
+
+Let X be a real reflexive Banach space, C a nonempty closed bounded convex subset, and V a finite nonempty vertex set. For every directed edge e:u->v choose a nonexpansive backbone F_e:C->C. Fix nonnegative incoming probabilities pi_(v,e) that sum to one across all edges terminating at v. On the finite product C^V with its sup norm, define
+
+    (T0(x))_v = sum_(e:u->v) pi_(v,e) F_e(x_u).
+
+Each coordinate is a convex combination of points in C, so T0 maps C^V into itself. Its sup-norm Lipschitz constant is at most one, because the F_e are nonexpansive and the probabilities are row-stochastic. Finite products of reflexive Banach spaces remain reflexive under the sup norm. Hence the theorem claimed in OpenAI family 328 supplies a fixed point of T0. This is a **barycentric network equilibrium**: it need not satisfy the stronger edge-by-edge simultaneous consistency equations, which can be incompatible.
+
+### Crouzeix regularization and exact Perron witness
+
+Replace each F_e by K_e=(1-eta_e)F_e+eta_e G_e(L_e x+b_e), with the same Crouzeix-certified rates r_e as NRF-02B, and define the nonnegative comparison matrix
+
+    M_(v,u) = sum_(e:u->v) pi_(v,e)*r_e.
+
+For any x,y, the componentwise distances obey d(Tx,Ty) <= M*d(x,y). If positive w satisfies Mw <= alpha*w for some alpha<1, T contracts in the weighted product norm ||x||_w=max_v ||x_v||/w_v. Therefore T has a unique fixed point and globally convergent iterates.
+
+For **nonnegative rational M**, the following are equivalent:
+
+- its spectral radius rho(M) is strictly smaller than one;
+- there is a positive rational w with Mw<w;
+- (I-M)w=1 has the positive solution w=(I-M)^(-1)1.
+
+For rho(M)<1, the Neumann series ensures w>=1, and Mw=w-1<w. Conversely Mw<w yields alpha=max_v (Mw)_v/w_v<1, and the weighted norm bounds the spectral radius by alpha. Gaussian elimination over Q gives a checkable rational witness. This is a standard positive-matrix criterion, incorporated here as a certificate for nonnormal recurrent polynomial updates.
+
+**Exact example.** A single vertex has two self-loops, with rates 3/2 and 1/4. An arbitrary hard schedule repeatedly taking the first edge is not pathwise contractive. Their fixed-probability mixture pi=(1/4,3/4) has M=(9/16), so the averaged map is a contraction with rate at most 9/16. This statement concerns the *averaged operator*, not arbitrary stochastic sample paths.
+
+### State-dependent soft routing
+
+Suppose each target v chooses incoming weights pi_(v,e)(x) that remain nonnegative and sum to one, with
+
+    ||pi_v(x)-pi_v(y)||_1 <= L_v ||x-y||_w.
+
+Let D=diam(C), and assume a uniform comparison bound
+
+    sup_x sum_(e:u->v) pi_(v,e)(x)*r_e*w_u <= R_v*w_v.
+
+Then the resulting soft-routed T has weighted Lipschitz constant at most
+
+    max_v [R_v + D*L_v/(2*w_v)].
+
+**Proof.** Expand T_v(x)-T_v(y) into the changes of K_e at fixed pi(x) plus changes in pi at fixed K_e(y). The first term is bounded by R_v*w_v*||x-y||_w. For the latter term, the coefficient differences sum to zero. Their positive and negative masses are each exactly half their L1 sum. Those two normalized convex combinations of points in C are at distance at most D. The route-change norm is therefore bounded by (D/2)*L_v*||x-y||_w. Division by w_v and a maximum over vertices finishes the result. If the stated bound is below one, Banach contraction gives a unique globally attracting soft-routed fixed point. Hard sign guards lack a finite global routing-Lipschitz constant at their decision boundary, as NRF-02B demonstrates.
+
+**Exact smooth example.** In C=[-1,1]^2, use high-gain 3/2, repair-gain 1/4, and p_high(x)=1/4+x_0/16. Then 3/16<=p_high<=5/16, and the two-component probability vector has L1 Lipschitz constant 1/8. Since D=2 sqrt(2)<=3, the uniform certificate is
+
+    (5/16)*(3/2) + (11/16)*(1/4) + (3/2)*(1/8)
+      = 41/64 + 12/64 = 53/64 < 1.
+
+The toy applies the exact rational mixture to the same two Jordan polynomial updates as the graph campaign. This supplies a *global* guarantee for state-dependent **smooth** routing, extending the finite trace guarantee under strict hard-guard margins.
+
+The independent rational oracle and 625-matrix Perron grid are in research/compactification/barycentric_fixedpoints.py and tests/test_barycentric_fixedpoints.py. Its analytic claims are proved above; Lean's NRF-02 module remains restricted to its two-edge cross-multiplication lemma. Rapid rational numerator growth in repeated nonlinear mixtures motivates short exact runs and interval-certified higher-depth experiments.
