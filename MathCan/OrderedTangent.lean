@@ -107,6 +107,31 @@ theorem hidden_probe_not_task_factorable
     _ = factor (head (state v)) := congrArg factor h_task
     _ = probe (state v) := (factors v).symm
 
+/-- The exact algebraic nullspace principle for any additive readout:
+    changing the hidden state by a kernel element leaves its image fixed. -/
+theorem additive_head_kernel_invariance
+    {Hidden Output : Type} [AddMonoid Hidden] [AddMonoid Output]
+    (readout : Hidden → Output)
+    (hadd : ∀ x y : Hidden, readout (x + y) = readout x + readout y)
+    (hidden displacement : Hidden)
+    (hnull : readout displacement = 0) :
+    readout (hidden + displacement) = readout hidden := by
+  rw [hadd hidden displacement, hnull, add_zero]
+
+/-- Adding a task-specific bias after a linear head preserves the
+    same nullspace guarantee. -/
+theorem affine_head_kernel_invariance
+    {Hidden Output : Type} [AddMonoid Hidden] [AddMonoid Output]
+    (readout : Hidden → Output) (bias : Output)
+    (hadd : ∀ x y : Hidden, readout (x + y) = readout x + readout y)
+    (hidden displacement : Hidden)
+    (hnull : readout displacement = 0) :
+    readout (hidden + displacement) + bias =
+      readout hidden + bias := by
+  rw [additive_head_kernel_invariance readout hadd hidden displacement hnull]
+
+#print axioms additive_head_kernel_invariance
+#print axioms affine_head_kernel_invariance
 #print axioms hidden_probe_not_task_factorable
 #print axioms upper_after_lower_general
 #print axioms lower_after_upper_general
