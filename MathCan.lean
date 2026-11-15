@@ -79,3 +79,4 @@ import MathCan.JordanDepth
 import MathCan.SuffixTransport
 import MathCan.NOR13GateOrder
 import MathCan.MatchedStepMargin
+import MathCan.ProjectorLeakage
