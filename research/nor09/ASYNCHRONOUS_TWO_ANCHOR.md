@@ -92,7 +92,7 @@ The resulting finite-prefix additive distortion \(E_M\) remains separately accou
 
 Both \(z_1(m)\) and \(z_2(n)\) remain inside their **distinct** invariant balls at every captured 24-step checkpoint. Thus, for arbitrary \(m,n\ge0\),
 \[
-\boxed{\|z_1(m)-z_2(n)\|_2>g>5.020911335789842.}\tag{3}
+\boxed{\|z_1(m)-z_2(n)\|_2\ge g>5.020911335789842.}\tag{3}
 \]
 If a representation assigns the *same* terminal code to both states, their encoded distance is zero. Any additive metric distortion promise strictly below \(g\) therefore requires different terminal codes, or at least **one binary basin label**. This follows directly from the certified geometric separation and the general MathCan NOR-08 injectivity theorem.
 
