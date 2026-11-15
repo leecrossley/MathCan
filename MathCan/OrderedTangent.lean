@@ -133,6 +133,32 @@ theorem affine_head_kernel_invariance
       readout hidden + bias := by
   rw [additive_head_kernel_invariance readout hadd hright_zero hidden displacement hnull]
 
+/-- A linear head selecting the first coordinate. -/
+def firstCoordinateHead (z : Int × Int) : Int := z.1
+
+/-- The entire second-coordinate axis lies in the final head's kernel. -/
+theorem head_kernel_second_axis (v : Int) :
+    firstCoordinateHead (0, v) = 0 := by
+  rfl
+
+/-- Passing that head-invisible axis through one shear makes the
+    previously invisible coordinate visible to the future readout. -/
+theorem upper_shear_reactivates_head_kernel (v : Int) :
+    firstCoordinateHead (upper (0, v)) = v := by
+  simp [firstCoordinateHead, upper]
+
+/-- Finite witness: (0,1) and (0,0) have identical current head
+    outputs, while one extra recurrent shear distinguishes them. -/
+theorem dormant_hidden_feature_changes_future_logit :
+    firstCoordinateHead (0, (1 : Int)) =
+      firstCoordinateHead (0, (0 : Int)) ∧
+    firstCoordinateHead (upper (0, (1 : Int))) ≠
+      firstCoordinateHead (upper (0, (0 : Int))) := by
+  decide
+
+#print axioms head_kernel_second_axis
+#print axioms upper_shear_reactivates_head_kernel
+#print axioms dormant_hidden_feature_changes_future_logit
 #print axioms additive_head_kernel_invariance
 #print axioms affine_head_kernel_invariance
 #print axioms hidden_probe_not_task_factorable
