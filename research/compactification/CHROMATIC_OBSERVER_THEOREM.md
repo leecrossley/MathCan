@@ -55,10 +55,28 @@ at a `2t+1` flip margin. This is a clique-specific obstruction, with no claim th
 
 **Finite sharp cell.** For `G=K6`, one-bit separation has exact width 3. Under one-bit flip tolerance (`r=3`) the exact width is **6**. A five-bit code would need `6*(1+5)=36` positions for disjoint radius-one balls inside `2^5=32` available positions, impossible. The six six-bit words `0,7,25,30,42,45` have pairwise Hamming distance at least three. The Lean module checks their range, pairwise margins and the integer packing obstruction; the general packing lemma is written here.
 
+## The metric-quotient strengthening
+
+The Hilbert-star construction is a special case of a stronger metric theorem. Let `(X,d)` be any nonempty **finite metric space**, `L>0`, and `E` an undirected evaluator graph on X. Form the **forced-identification graph** `H_L` by joining every two distinct points with `d(x,y)<1/L`. Let `π:X→Q` be its connected-component quotient. A binary observer `c:X→{0,1}^k` is `L`-Lipschitz into ℓ∞ exactly when it is constant on each connected component of `H_L`.
+
+**Theorem COE-3 (exact metric-constrained chromatic observer).** If an evaluator edge joins two points in the same forced-identification component, no finite-width L-Lipschitz binary observer can satisfy the test. Otherwise, let `G_Q` be the evaluator graph induced on `Q`. Then
+
+```
+          min_L-Lipschitz observer bits = ceil(log_2 χ(G_Q)).
+```
+
+Every resulting observer on X extends to any ambient metric space containing X as an `L`-Lipschitz function with values in `[0,1]^k`, measured in ℓ∞. In particular this applies to Hilbert activations.
+
+*Proof.* Whenever `c(x)≠c(y)`, two binary vectors differ in some coordinate by exactly 1, so the Lipschitz condition forces `1≤L d(x,y)`. This shows c is constant across `H_L` edges and consequently across connected components. Evaluator edges internal to one such component are therefore infeasible. For the converse, color `G_Q` optimally using χ distinct binary words in `k=ceil(log2 χ)` coordinates, and pull the code back along π. If x,y lie in the same component their codes agree. Across distinct components, `(x,y)` is no edge of `H_L`, hence `d(x,y)≥1/L`. As binary codes are at most unit distance apart in ℓ∞, the pulled-back observer is L-Lipschitz. Any evaluator-respecting observer yields a proper coloring of `G_Q`, giving the matching lower bound. Extend each coordinate by `clip_[0,1](inf_{s∈X}[c_j(s)+L d(x,s)])`; the standard cone argument finishes. ∎
+
+This result makes an additional obstruction explicit: *short-edge connectivity can force globally identical binary readings even for points whose direct distance exceeds `1/L`*. On the real line with samples `0, 3/5, 6/5` and `L=1`, all points belong to one connected `H_L` component. The evaluator request to distinguish endpoints is impossible, even though their direct distance is `6/5 > 1`. Increasing L to 2 splits all three points into separate components, making a one-bit task observer feasible. At the exact boundary `d=1/L`, different bits are permitted.
+
+For robust Hamming-margin r observables the same forced-identification quotient applies, because the output ℓ∞ distance of any distinct binary codes remains 1. The COE-2 color-repetition upper bound therefore holds on `G_Q` whenever the instance is feasible. An ambient Lipschitz extension takes values in the continuous cube; its intermediate points may have fractional coordinates, as required by continuity on connected Hilbert spaces.
+
 ## Scope and limitations
 
-The graph represents **evaluator-relevant pairs**, rather than all Hilbert distances. Two vertices with the same observer code may be geometrically separated, and the extended observer need not have a Lipschitz inverse. The construction is thus compatible with the obstruction in family 098. Finite-dimensional ℓ1 extension with optimal universal constant, all graphs' robust coding numbers and the genuine compact doubling construction of family 098 remain separate questions.
+The graph represents **evaluator-relevant pairs**, rather than all Hilbert distances. The COE-3 quotient incorporates local metric constraints before coding. Two vertices with the same observer code may be geometrically separated, and the extended observer need not have a Lipschitz inverse. The construction is thus compatible with the obstruction in family 098. Finite-dimensional ℓ1 extension with optimal universal constant, all graphs' robust coding numbers and the genuine compact doubling construction of family 098 remain separate questions.
 
 ## Reproduce
 
-The companion reference in `MoralityLabAI/Compactification-Theory/research/chromatic_observer_gym_v1` implements exact graph coloring, minimal robust observer search, the explicit extension and regression tests. Its deterministic suite enumerates all 64 simple graphs on four vertices. The MathCan Lean module uses the repository's `leanprover/lean4:v4.35.0` `Init` toolchain and reports the transitive axioms of each finite lemma. Source results are not imported as axioms.
+The companion reference in `MoralityLabAI/Compactification-Theory/research/chromatic_observer_gym_v1` implements exact graph coloring, minimal robust observer search, the explicit extension and regression tests. Its deterministic suite enumerates all 64 simple graphs on four vertices and checks metric-quotient equivalence, transitive forced identifications and strict threshold behavior. The MathCan Lean module uses the repository's `leanprover/lean4:v4.35.0` `Init` toolchain and reports the transitive axioms of each finite lemma. Source results are not imported as axioms.

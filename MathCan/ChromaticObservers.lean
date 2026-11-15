@@ -63,6 +63,31 @@ theorem erasure_margin_arithmetic (margin erased : Nat)
     (h : erased < margin) : 0 < margin - erased := by
   omega
 
+/-- A unit Hamming jump requires at least the threshold in metric
+    distance. Thus a shorter edge forces the binary observer to be equal. -/
+theorem binary_lipschitz_forces_identification
+    (threshold distance : Nat) (a b : Bool)
+    (hshort : distance < threshold)
+    (hlip : (if a = b then 0 else threshold) ≤ distance) :
+    a = b := by
+  by_contra hne
+  simp [hne] at hlip
+  omega
+
+/-- Two short edges force equality at their endpoints, including when
+    their direct distance is large. This models a metric-quotient chain. -/
+theorem two_short_edges_collapse
+    (threshold d01 d12 : Nat) (a b c : Bool)
+    (h01 : d01 < threshold) (h12 : d12 < threshold)
+    (hlip01 : (if a = b then 0 else threshold) ≤ d01)
+    (hlip12 : (if b = c then 0 else threshold) ≤ d12) :
+    a = c := by
+  have hab : a = b :=
+    binary_lipschitz_forces_identification threshold d01 a b h01 hlip01
+  have hbc : b = c :=
+    binary_lipschitz_forces_identification threshold d12 b c h12 hlip12
+  exact hab.trans hbc
+
 /-- Repeating a bit `margin` times makes the output width exactly
     `margin * k` and supplies the stated finite upper budget. -/
 theorem repetition_width (k margin : Nat) :
@@ -75,6 +100,8 @@ theorem repetition_width (k margin : Nat) :
 #print axioms six_radius_one_balls_overfill_five_bits
 #print axioms eight_path_one_bit_certificate
 #print axioms erasure_margin_arithmetic
+#print axioms binary_lipschitz_forces_identification
+#print axioms two_short_edges_collapse
 #print axioms repetition_width
 
 end MathCan.ChromaticObservers
