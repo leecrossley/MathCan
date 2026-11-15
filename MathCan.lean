@@ -78,5 +78,6 @@ import MathCan.GateFamilyNoGo
 import MathCan.JordanDepth
 import MathCan.SuffixTransport
 import MathCan.NOR13GateOrder
+import MathCan.NOR15TrajectoryObservability
 import MathCan.MatchedStepMargin
 import MathCan.ProjectorLeakage
