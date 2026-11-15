@@ -38,3 +38,4 @@ import MathCan.ObservableQuotient
 import MathCan.ObservableFamily
 import MathCan.ObservablePareto
 import MathCan.GateFamilyNoGo
+import MathCan.JordanDepth
