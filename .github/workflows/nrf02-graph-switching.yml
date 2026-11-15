@@ -9,6 +9,8 @@ on:
       - 'tests/test_graph_switching.py'
       - 'research/compactification/barycentric_fixedpoints.py'
       - 'tests/test_barycentric_fixedpoints.py'
+      - 'MathCan/ObservableQuotient.lean'
+      - 'tests/test_observable_fibers.py'
       - '.github/workflows/nrf02-graph-switching.yml'
   pull_request:
     paths:
@@ -18,6 +20,8 @@ on:
       - 'tests/test_graph_switching.py'
       - 'research/compactification/barycentric_fixedpoints.py'
       - 'tests/test_barycentric_fixedpoints.py'
+      - 'MathCan/ObservableQuotient.lean'
+      - 'tests/test_observable_fibers.py'
       - '.github/workflows/nrf02-graph-switching.yml'
   workflow_dispatch:
 
@@ -32,7 +36,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m unittest tests.test_crouzeix_switching tests.test_graph_switching tests.test_barycentric_fixedpoints -v
+      - run: python -m unittest tests.test_crouzeix_switching tests.test_graph_switching tests.test_barycentric_fixedpoints tests.test_observable_fibers -v
 
   lean-cross-multiplied-path:
     runs-on: ubuntu-latest
@@ -51,6 +55,7 @@ jobs:
         run: |
           set -euo pipefail
           lake env lean MathCan/GraphSwitching.lean | tee nrf02-axioms.txt
+          lake env lean MathCan/ObservableQuotient.lean | tee -a nrf02-axioms.txt
           if grep -Eq 'sorryAx|ofReduceBool' nrf02-axioms.txt; then
             echo 'An admitted or native reduction axiom was detected.'
             exit 1

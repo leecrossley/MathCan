@@ -34,3 +34,4 @@ import MathCan.CoarseStateDependence
 import MathCan.TacticFibers
 import MathCan.NumericalRangeSwitching
 import MathCan.GraphSwitching
+import MathCan.ObservableQuotient
