@@ -27,10 +27,14 @@ theorem pairs_add (a b : Nat) :
   | zero =>
       simp [pairs]
   | succ b ih =>
-      simp only [Nat.add_succ, pairs]
-      rw [ih]
-      simp only [Nat.mul_succ]
-      omega
+      calc
+        pairs (a + (b + 1)) = pairs (a + b) + (a + b) := by
+          simp only [Nat.add_succ, pairs]
+        _ = (pairs a + pairs b + a * b) + (a + b) := by
+          rw [ih]
+        _ = pairs a + pairs (b + 1) + a * (b + 1) := by
+          simp only [pairs, Nat.mul_succ]
+          omega
 
 /-- The additional collision cost of a single class merge is a*b. -/
 theorem merge_collision_gap (a b : Nat) :
