@@ -36,8 +36,7 @@ jobs:
       - uses: leanprover/lean-action@v1
         with:
           auto-config: false
-          build: true
-          build-args: MathCan
+          build: false
           test: false
           lint: false
           use-mathlib-cache: false
