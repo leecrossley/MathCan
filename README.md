@@ -146,3 +146,7 @@ The [source-level 2-form spectral note](research/toe/TOE09_LORENTZ_BIVECTOR_SPEC
 ## NOR-01: numerical-range infinite-orbit sketches
 
 [Analytic theorem and Lean stitching proof](research/nor01/NUMERICAL_ORBIT_STITCHING.md) combine OpenAI Math #094 (finite \\(L_p\\) dimension reduction) and #325 (Crouzeix numerical-range bound) with a Gaussian Hilbert-to-\\(L_p\\) bridge. The Lean file establishes the exact integer-metric finite-window/tail lemma; the imported analytic theorems remain paper-level.
+
+## NOR-02: filtered orbit curvature and complete Crouzeix
+
+[Disk extremal, complete operator-valued filter and all-horizon Lp theorem](research/nor02/FILTERED_ORBIT_CURVATURE.md), including an exact condition for attaining the disk extremal, dimension-independent noncommuting coefficient channels, and an optimized anchor-aware stitching error. The new Init-only Lean file checks the integer-metric stitching lemma and noncommutation; the geometric and analytic imports remain paper-level. The [companion 128-to-24 filtered-orbit gym](https://github.com/MoralityLabAI/Compactification-Theory/tree/research/nor01-numerical-orbit-sketch-20261115/research/nor01_numerical_orbit_sketch) uses exact rational disk geometry and seeded finite controls.
