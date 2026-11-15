@@ -12,7 +12,7 @@ namespace MathCan.ProjectorLeakage
 /-- A squared sum contains both cross channels. -/
 theorem squared_sum_four_terms (a b : Nat) :
     (a + b) * (a + b) = a * a + a * b + b * a + b * b := by
-  simp only [add_mul, mul_add]
+  simp only [Nat.add_mul, Nat.mul_add]
   ac_rfl
 
 /-- Reordering exposes two squared components and their interference. -/
