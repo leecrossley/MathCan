@@ -52,11 +52,16 @@ theorem refined_tail_stitch
       original i j ≤ sketched i j + optimalBudget E E0 B L ∧
       sketched i j ≤ original i j + optimalBudget E E0 B L := by
   have hE : E ≤ optimalBudget E E0 B L := by
-    simp [optimalBudget]
+    change E ≤ max E (max (E0 + B) L)
+    exact Nat.le_max_left E (max (E0 + B) L)
   have hCross : E0 + B ≤ optimalBudget E E0 B L := by
-    simp [optimalBudget]
+    change E0 + B ≤ max E (max (E0 + B) L)
+    exact (Nat.le_max_left (E0 + B) L).trans
+      (Nat.le_max_right E (max (E0 + B) L))
   have hL : L ≤ optimalBudget E E0 B L := by
-    simp [optimalBudget]
+    change L ≤ max E (max (E0 + B) L)
+    exact (Nat.le_max_right (E0 + B) L).trans
+      (Nat.le_max_right E (max (E0 + B) L))
   intro i j
   by_cases hi : i ≤ cutoff
   · by_cases hj : j ≤ cutoff
@@ -95,9 +100,9 @@ theorem optimal_budget_le_legacy (E E0 B L : Nat)
     (hAnchor : E0 ≤ E) (hLate : L ≤ 2 * B) :
     optimalBudget E E0 B L ≤ E + 2 * B := by
   unfold optimalBudget
-  apply max_le
+  apply Nat.max_le_of_le_of_le
   · omega
-  · apply max_le
+  · apply Nat.max_le_of_le_of_le
     · omega
     · omega
 
