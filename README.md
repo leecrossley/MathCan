@@ -158,3 +158,7 @@ The [source-level 2-form spectral note](research/toe/TOE09_LORENTZ_BIVECTOR_SPEC
 ## NOR-04: nonlinear invariant ball
 
 [Validated all-depth nonlinear compactification theorem](research/nor04/NONLINEAR_INVARIANT_BALL.md) applies a source-locked rational interval certificate to the trained RRC-25 GRU. A 12-step nonlinear map is contractive on a radius-1e-11 ball, with \(K\le0.928242792263\) and exact invariant margin. [GitHub Actions run 43691939525](https://github.com/MoralityLabAI/Compactification-Theory/actions/runs/43691939525) passed. The new `MathCan/InvariantBall.lean` kernel-checks the receipt's exact clearance and finite scaled invariance arithmetic; Banach and \(L_p\) corollaries remain written proofs.
+
+## NOR-05: period-one nonlinear convergence
+
+[Period-one exclusion and unstrided all-depth Lp compactification](research/nor05/PERIOD_ONE_NONLINEAR_COMPACTIFICATION.md) uses the NOR-04 unique fixed point of the twelve-step GRU block. A separately certified one-step image bound can force that fixed point to be stationary under the original recurrent step. `MathCan/PeriodOne.lean` proves the abstract commutation/uniqueness implication in Lean, with the new numeric test run by the companion [Compactification-Theory NOR-05 gym](https://github.com/MoralityLabAI/Compactification-Theory/tree/research/nor01-numerical-orbit-sketch-20261115/research/nor01_numerical_orbit_sketch). Its full real-analytic and Gaussian-Lp arguments remain written mathematical proofs.
