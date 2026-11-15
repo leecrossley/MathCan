@@ -47,8 +47,10 @@ jobs:
         run: |
           set -euo pipefail
           (cd _old_mathcan && lake build MathCan)
-          mkdir -p _old_mathcan/.lake/build/lib/lean/RAM12
-          (cd _old_mathcan && lake env lean ../research/ram12/RAM12/Trace.lean -o .lake/build/lib/lean/RAM12/Trace.olean)
+          mkdir -p _old_mathcan/RAM12 _old_mathcan/.lake/build/lib/lean/RAM12
+          cp research/ram12/RAM12/Trace.lean _old_mathcan/RAM12/Trace.lean
+          (cd _old_mathcan && lake env lean RAM12/Trace.lean -o .lake/build/lib/lean/RAM12/Trace.olean)
+          test "$(git -C _old_mathcan status --porcelain --untracked-files=no)" = ""
       - name: Double-compile all 76 original complete theorem sources and record exact prefix states
         run: |
           set -euo pipefail
