@@ -1,0 +1,51 @@
+name: PEF-02 Lean noise margin and Markov-prior certificates
+
+on:
+  push:
+    paths:
+      - 'MathCan/PrecisionEntropyRobust.lean'
+      - 'MathCan.lean'
+      - 'research/compactification/PEF02_FORMAL.md'
+      - 'tests/test_precision_entropy_robust.py'
+      - '.github/workflows/pef02-lean-robust.yml'
+  pull_request:
+    paths:
+      - 'MathCan/PrecisionEntropyRobust.lean'
+      - 'MathCan.lean'
+      - 'research/compactification/PEF02_FORMAL.md'
+      - 'tests/test_precision_entropy_robust.py'
+      - '.github/workflows/pef02-lean-robust.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+jobs:
+  finite-oracle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s tests -p 'test_precision_entropy_robust.py' -v
+  lean-kernel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          auto-config: false
+          build: true
+          build-args: MathCan
+          test: false
+          lint: false
+          use-mathlib-cache: false
+      - name: New PEF-02 theorem axiom inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake env lean MathCan/PrecisionEntropyRobust.lean | tee pef02-axioms.txt
+          if grep -Eq 'sorryAx|ofReduceBool' pef02-axioms.txt; then
+            echo "PEF-02 unverified axioms were found."
+            exit 1
+          fi

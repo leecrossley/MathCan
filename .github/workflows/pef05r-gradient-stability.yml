@@ -1,0 +1,51 @@
+name: PEF-05R Lean optimizer error-envelope certificate
+
+on:
+  push:
+    paths:
+      - 'MathCan/GradientStability.lean'
+      - 'MathCan.lean'
+      - 'research/compactification/PEF05R_ERROR_ENVELOPE.md'
+      - 'tests/test_gradient_stability.py'
+      - '.github/workflows/pef05r-gradient-stability.yml'
+  pull_request:
+    paths:
+      - 'MathCan/GradientStability.lean'
+      - 'MathCan.lean'
+      - 'research/compactification/PEF05R_ERROR_ENVELOPE.md'
+      - 'tests/test_gradient_stability.py'
+      - '.github/workflows/pef05r-gradient-stability.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  finite-python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s tests -p test_gradient_stability.py -v
+  lean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: leanprover/lean-action@v1
+        with:
+          auto-config: false
+          build: true
+          build-args: MathCan
+          test: false
+          lint: false
+          use-mathlib-cache: false
+      - name: Audit dependency-closed new theorem axioms
+        shell: bash
+        run: |
+          set -euo pipefail
+          lake env lean MathCan/GradientStability.lean | tee pef05r-axioms.txt
+          if grep -Eq 'sorryAx|ofReduceBool' pef05r-axioms.txt; then
+            exit 1
+          fi
