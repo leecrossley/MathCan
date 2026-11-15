@@ -67,9 +67,9 @@ theorem disjoint_futures_force_one_failure
     futureA j = false ∨ futureB j = false := by
   cases ha : futureA j with
   | false =>
-      exact Or.inl rfl
+      exact Or.inl ha
   | true =>
-      exact Or.inr (disjoint j rfl)
+      exact Or.inr (disjoint j ha)
 
 /-- The full alias obstruction: under identical public acceptance
     responses, a fixed stop-at-first-success verifier picks the same
