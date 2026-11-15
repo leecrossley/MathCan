@@ -85,3 +85,5 @@ import MathCan.ProjectorLeakage
 import MathCan.NOR15VerifierAlias
 
 import MathCan.NOR15MaskCapacity
+
+import MathCan.NOR16PublicQueryConsensus
