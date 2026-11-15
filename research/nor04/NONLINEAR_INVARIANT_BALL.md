@@ -1,6 +1,6 @@
 # NOR-04: an all-depth nonlinear compactification from a validated invariant ball
 
-**Date:** November 15, 2026. **Status:** Banach fixed-point and finite \(L_p\) compactification theorem with a complete written proof. Applied parameters are a frozen hypothesis until the corresponding exact-rational GitHub Actions job returns a successful certificate. Literature priority is unverified. The external mathematical inputs are OpenAI Math #094 and #325, pinned in NOR-01/02.
+**Date:** November 15, 2026. **Status:** Banach fixed-point and finite \(L_p\) compactification theorem with a complete written proof, plus a **passed exact-rational trained-GRU invariant-ball certificate** from [GitHub Actions run 43691939525](https://github.com/MoralityLabAI/Compactification-Theory/actions/runs/43691939525). The analytic Banach and Gaussian arguments remain paper-level. Literature priority is unverified. The external mathematical inputs are OpenAI Math #094 and #325, pinned in NOR-01/02.
 
 ## The validated-ball theorem
 
@@ -86,7 +86,7 @@ Companion implementation in [Compactification-Theory NOR-04](https://github.com/
 - Original source-locked 1,000-parameter, 12-hidden-coordinate RRC-25 GRU, zero-input transition.
 - Proposed center: a twelve-vector of 17-decimal rational coordinates obtained by a long nominal zero-input replay and Newton polishing. It is **a supplied candidate**, independent of the interval proof.
 - Proposed radius \(R=10^{-11}\), 12 zero-input GRU transitions per block. All exact interval decisions use rational inequalities and a separate norm bound on the whole ball.
-- The required validation is \(K<1\), \(s+KR\le R\), the unit-cube margin for the center, and exact checkpoint SHA preservation. The concrete values must come from the completed NOR-04 GitHub Actions receipt.
+- The independent [NOR-04 GitHub Actions audit](https://github.com/MoralityLabAI/Compactification-Theory/actions/runs/43691939525) passed. It certified \(K\le928242792263/10^{12}=0.928242792263\) and \(s\le237277631/(2\cdot10^{23})=1.186388155\times10^{-15}\) at \(R=10^{-11}\). The exact invariance margin is \(143277137843/(2\cdot10^{23})=7.16385689215\times10^{-13}>0\). The pointwise block numerical-range disk has upper radial value \(q=0.937877390996\). Every stated bound is specific to the frozen checkpoint and real-valued rational-lift model. Four focused regression tests passed. The machine-readable receipt is [committed with the gym](https://github.com/MoralityLabAI/Compactification-Theory/blob/research/nor01-numerical-orbit-sketch-20261115/research/nor01_numerical_orbit_sketch/results/nor04_invariant_ball.json).
 - The interval proof establishes a local basin of radius \(10^{-11}\); no input-conditioned held-out GRU state is presumed to enter that ball. The certified fixed point is for \(F^{12}\), with period-one status requiring an additional argument.
 
 The pure-math theorem has a human-readable proof. The user's Init-only Lean modules NOR-01/02/03 establish finite arithmetic stitching and shadowing lemmas, while general Banach fixed-point and infinite-dimensional Gaussian \(L_p\) statements remain paper-level mathematics.
