@@ -1,9 +1,11 @@
-name: NOR-04 rational invariant-ball Lean gate
+name: NOR-04/05 invariant-ball and period-one Lean gates
 
 on:
   push:
     paths:
       - 'MathCan/InvariantBall.lean'
+      - 'MathCan/PeriodOne.lean'
+      - 'research/nor05/**'
       - 'MathCan.lean'
       - 'research/nor04/**'
       - '.github/workflows/nor04-invariant-ball-lean.yml'
@@ -37,6 +39,7 @@ jobs:
         run: |
           set -euo pipefail
           lake env lean MathCan/InvariantBall.lean | tee nor04-axioms.txt
+          lake env lean MathCan/PeriodOne.lean | tee -a nor04-axioms.txt
           if grep -Eq 'sorryAx|ofReduceBool' nor04-axioms.txt; then
             echo 'Admitted proof or native reduction axiom found'
             exit 1
