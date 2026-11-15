@@ -1,6 +1,6 @@
 # NOR-02: curvature-suppressed filtered recurrent orbits
 
-**Provenance and status (15 November 2026).** New derivation in this research program from OpenAI Math **#094** (*Subpolynomial dimension reduction in Lp*, 23 September 2026) and **#325** (*A direct proof of the complete Crouzeix inequality*, 26 September 2026), pinned to source commit \`openai/math@4eaee87548250b2682affda7d05d947c05554bae\`. Mathematical priority relative to other literature has not been established. The analytic proof below is paper-level. \`MathCan/FilteredOrbit.lean\` proves the *separate discrete metric stitching* and noncommuting-coefficient identities; it does not kernel-check the complex functional calculus or the Gaussian/Lp embedding theorem.
+**Provenance and status (15 November 2026).** New derivation in this research program from OpenAI Math **#094** (*Subpolynomial dimension reduction in Lp*, 23 September 2026) and **#325** (*A direct proof of the complete Crouzeix inequality*, 26 September 2026), pinned to source commit `openai/math@4eaee87548250b2682affda7d05d947c05554bae`. Mathematical priority relative to other literature has not been established. The analytic proof below is paper-level. `MathCan/FilteredOrbit.lean` proves the *separate discrete metric stitching* and noncommuting-coefficient identities; it does not kernel-check the complex functional calculus or the Gaussian/Lp embedding theorem.
 
 - [Paper #094, LaTeX](https://github.com/openai/math/blob/4eaee87548250b2682affda7d05d947c05554bae/preprints/Subpolynomial-dimension-reduction-in-Lp-September-23-2026/build/paper.tex)
 - [Paper #325, LaTeX](https://github.com/openai/math/blob/4eaee87548250b2682affda7d05d947c05554bae/preprints/A-direct-proof-of-the-complete-Crouzeix-inequality-September-26-2026/build/main.tex)
@@ -131,7 +131,7 @@ The dimension is independent of the original state dimension and the polynomial'
 \(E_T\le(D-1)\operatorname{diam}(\{0,v_0,\ldots,v_{T-1}\})\).
 At fixed \(p,D,r,a,b\), the tail part of (4) decays as \(O(q^T T^{-r/2})\), while the measured finite-window distortion remains a separate term.
 
-**Proof.** Both observed: error at most \(E_T\). One observed and one clipped: the reverse triangle inequality bounds the change in the original distance caused by replacing \(v_t\) by zero by \(\|v_t\|\le B_T\); the observed-to-anchor sketch error is at most \(E_{0,T}\). Both clipped: the sketch distance is zero, so apply (3). These cases give (4). The discrete generalization with an arbitrary independent late-pair budget \(L\) is kernel-checked in \`MathCan/FilteredOrbit.lean\`. \(\square\)
+**Proof.** Both observed: error at most \(E_T\). One observed and one clipped: the reverse triangle inequality bounds the change in the original distance caused by replacing \(v_t\) by zero by \(\|v_t\|\le B_T\); the observed-to-anchor sketch error is at most \(E_{0,T}\). Both clipped: the sketch distance is zero, so apply (3). These cases give (4). The discrete generalization with an arbitrary independent late-pair budget \(L\) is kernel-checked in `MathCan/FilteredOrbit.lean`. \(\square\)
 
 ## 4. Exact synthetic numerical-range certificate and measured example
 
