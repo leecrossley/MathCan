@@ -39,3 +39,4 @@ import MathCan.OrderedTangent
 import MathCan.CausalInteraction
 import MathCan.PairedHistory
 import MathCan.MemoryProjection
+import MathCan.GradientStability
