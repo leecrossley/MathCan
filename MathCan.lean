@@ -35,3 +35,4 @@ import MathCan.TacticFibers
 import MathCan.ChromaticObservers
 import MathCan.ChromaticCutCodes
 import MathCan.SoftObserverPrecision
+import MathCan.TemporalCutCapacity
