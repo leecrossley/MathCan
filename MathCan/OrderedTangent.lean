@@ -85,6 +85,29 @@ theorem lower_determinant_one :
     orientedArea (lower (1,0)) (lower (0,1)) = 1 := by
   decide
 
+/-- A causally decodable hidden feature that differs across two inputs
+    with the same task output cannot be reconstructed from the task
+    output alone. This is the factorization obstruction behind a
+    task-irrelevant but recoverable history channel. -/
+theorem hidden_probe_not_task_factorable
+    {Input Hidden Output Feature : Type}
+    (state : Input → Hidden)
+    (head : Hidden → Output)
+    (probe : Hidden → Feature)
+    (u v : Input)
+    (h_task : head (state u) = head (state v))
+    (h_probe : probe (state u) ≠ probe (state v)) :
+    ¬ ∃ factor : Output → Feature,
+        ∀ x : Input, probe (state x) = factor (head (state x)) := by
+  intro h
+  rcases h with ⟨factor, factors⟩
+  apply h_probe
+  calc
+    probe (state u) = factor (head (state u)) := factors u
+    _ = factor (head (state v)) := congrArg factor h_task
+    _ = probe (state v) := (factors v).symm
+
+#print axioms hidden_probe_not_task_factorable
 #print axioms upper_after_lower_general
 #print axioms lower_after_upper_general
 #print axioms shear_commutator
