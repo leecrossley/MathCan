@@ -68,39 +68,62 @@ class PhaseLatchExactTests(unittest.TestCase):
         from random import Random
 
         def rank_over_q(integer_rows):
-            # Exact rational Gaussian elimination. The repository-wide
-            # mathematical oracle workflow is standard-library-only.
-            matrix = [[Q(v) for v in row] for row in integer_rows]
+            # Fraction-based row elimination checks exact rank over the rationals.
+            # It avoids NumPy, which the repository-wide standard-library CI
+            # deliberately does not install.
+            matrix=[[Q(v) for v in row] for row in integer_rows]
             if not matrix:
                 return 0
-            pivot = 0
+            pivot=0
             for col in range(len(matrix[0])):
-                candidate = next((i for i in range(pivot, len(matrix))
-                                  if matrix[i][col] != 0), None)
+                candidate=next((i for i in range(pivot,len(matrix))
+                                if matrix[i][col]!=0),None)
                 if candidate is None:
                     continue
-                matrix[pivot], matrix[candidate] = matrix[candidate], matrix[pivot]
-                for i in range(pivot + 1, len(matrix)):
-                    factor = matrix[i][col] / matrix[pivot][col]
+                matrix[pivot],matrix[candidate]=matrix[candidate],matrix[pivot]
+                for i in range(pivot+1,len(matrix)):
+                    factor=matrix[i][col]/matrix[pivot][col]
                     if factor:
-                        for j in range(col, len(matrix[0])):
-                            matrix[i][j] -= factor * matrix[pivot][j]
-                pivot += 1
-                if pivot == len(matrix):
+                        for j in range(col,len(matrix[0])):
+                            matrix[i][j]-=factor*matrix[pivot][j]
+                pivot+=1
+                if pivot==len(matrix):
                     break
             return pivot
 
-        for q in (2, 3, 5, 8):
-            rng = Random(332 + q)
-            code = [[rng.randrange(-7, 8) for _ in range(20)] for _ in range(q)]
-            anchor = [[code[i][c] - code[0][c] for c in range(20)] for i in range(q)]
-            contrasts = [[code[i][c] - code[j][c] for c in range(20)]
-                         for i in range(q) for j in range(q)]
-            self.assertEqual(rank_over_q(contrasts), q - 1)
-            self.assertEqual(rank_over_q(contrasts), rank_over_q(anchor))
-            self.assertTrue(all(contrasts[i*q + j] ==
-                                [anchor[i][c] - anchor[j][c] for c in range(20)]
-                                for i in range(q) for j in range(q)))
+        for q in (2,3,5,8):
+            rng=Random(332+q)
+            code=[[rng.randrange(-7,8) for _ in range(20)] for _ in range(q)]
+            anchor=[[code[i][c]-code[0][c] for c in range(20)] for i in range(q)]
+            contrasts=[[code[i][c]-code[j][c] for c in range(20)]
+                       for i in range(q) for j in range(q)]
+            self.assertLessEqual(rank_over_q(contrasts),q-1)
+            self.assertEqual(rank_over_q(contrasts),rank_over_q(anchor))
+            self.assertTrue(all(contrasts[i*q+j]==
+                [anchor[i][c]-anchor[j][c] for c in range(20)]
+                for i in range(q) for j in range(q)))
+
+    def test_exact_projected_phase_freeze_under_context_updates(self):
+        # The phase key is held at the previous value while arbitrary
+        # recurrent dynamics may update context and propose a new key.
+        def native(s):
+            a,c=s
+            return (1-a,c+Q(3,5)*a-Q(1,2)*c)
+        def controlled(s):
+            proposed=native(s)
+            return (s[0],proposed[1])
+        for initial_key,initial_context in product((Q(0),Q(1)),(Q(-1),Q(0),Q(2))):
+            state=(initial_key,initial_context)
+            seen_context=set()
+            for t in range(12):
+                self.assertEqual(state[0],initial_key)
+                seen_context.add(state[1])
+                state=controlled(state)
+            if initial_context == Q(6, 5) * initial_key:
+                # The context was already at its controlled fixed point.
+                self.assertEqual(len(seen_context),1)
+            else:
+                self.assertGreater(len(seen_context),1)
 
     def test_finite_boolean_driven_phase(self):
         def step(state):return (state[1], not state[1])

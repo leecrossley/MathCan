@@ -143,3 +143,30 @@ The statistics share model weights and prompts across randomized controls; each 
 - `LoopedTransformers` stores the frozen SHA-verified checkpoint manifest, source tests, and compact JSON receipts; binary trained weights remain in the attached SPC-04 experiment archive.
 - The intervention uses future state from the **same** source input as an oracle counterfactual. It is a causal diagnostic of hidden-state phase location and not a deployable predictive control policy.
 - This work uses synthetic 8-node pointer chasing with two trained 48-wide models. It demonstrates localized computation-phase control within that scope. No larger-LM generality, semantic knowledge, or safety claim follows.
+
+## G. A necessity theorem for continuous phase-subspace ablation
+
+The sufficiency experiment transplants a low-rank answer-phase update. A distinct causal question asks whether the learned phase subspace is **necessary for continued recurrent outputs**. Start after the third supervised update and suppress only the answer-token increment projected onto the previously learned rank-seven SVD basis at each later loop. Keep the context states and the fixed graph prompt updated normally.
+
+**Theorem 6 (projected increment suppression freezes projected readout).** Let \(P:A\to A\) be a linear projection, \(P^2=P\), and let \(F_e:C\oplus A\to C\oplus A\) be any recurrent update. Define a controlled update by
+
+\[
+ \widetilde F_e(c,a)=(c',\,a+(I-P)(a'-a)),\qquad (c',a')=F_e(c,a).
+ \tag{8}
+\]
+
+Then every controlled trajectory satisfies \(Pa_t=Pa_0\). For any readout that factors as \(R(c,a)=\rho(Pa)\), the output \(R(\widetilde F_e^t(c_0,a_0))\) is constant for all \(t\ge0\), even as the complement of \(P\) and the context coordinates change.
+
+**Proof.** Since \(P^2=P\), applying \(P\) to the second component of (8) gives
+
+\[
+ P[a+(I-P)(a'-a)]=Pa+(P-P^2)(a'-a)=Pa.
+\]
+
+Induction on time proves \(Pa_t=Pa_0\). The asserted readout equality follows by evaluating \(\rho\) at this fixed value. In `MathCan/PhaseLatch.lean`, the theorem is kernel-checked for a generic key/context pair by replacing the key with its previous value after each arbitrary context update. It is an instance of (8) for a coordinate projector; the general Hilbert-space statement remains a written proof.
+
+**Held-out empirical counterfactual.** For the same 384 prompts and two fixed SPC-04 checkpoints, evaluate at depths 6, 12 and 24 after starting subspace suppression at step 4. Using the frozen rank-seven PCA basis, every output matches the model's **loop-3 readout** on all 384 prompts at all three depths. The rank-eight ablation gives the same result. Hidden states continue evolving in the orthogonal complement. Unintervened current-hop accuracy at depth 6 is 382/384, while rank-seven suppression gives 92/384, exactly the count achieved by freezing the entire answer token. The latter number is not interpreted as chance accuracy: on small permutation cycles, hop 3 can coincide with hop 6.
+
+A rank-eight *random* ablation in the same 48-dimensional answer space gives 276–332 correct answers at depth 6 over eight random bases. When random ablations remove the same total increment norm as the learned rank-eight projector, only 120–144 remain correct; these controls generally **fail to freeze** the readout to its initial value. The controlled direction therefore matters, and raw performance loss from a large-magnitude intervention alone does not establish phase-specific mechanism.
+
+Theorem 6 is a sufficient condition, not a proof that the actual nonlinear LayerNorm readout globally factors through this PCA subspace. Its near-exact empirical freeze on the tested inputs indicates that the readout along these controlled trajectories behaves as if the phase-bearing component were conserved. To establish a global mechanistic account, estimate the readout's sensitivity to complementary directions and repeat on out-of-distribution graphs.

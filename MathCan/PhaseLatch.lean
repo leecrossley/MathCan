@@ -100,6 +100,35 @@ theorem answer_transplant_selects_next :
 theorem context_transplant_retains_phase :
     phaseLatchStep swapContext = phaseLatchStep phaseZero := by decide
 
+/-- A host-owned update can change context while suppressing the key update. -/
+def suppressKeyStep {Key Context : Type}
+    (f : Key × Context → Key × Context)
+    (x : Key × Context) : Key × Context :=
+  (x.1, (f x).2)
+
+/-- Phase-key suppression keeps its value even if context evolves. -/
+theorem suppressed_step_preserves_key {Key Context : Type}
+    (f : Key × Context → Key × Context) (x : Key × Context) :
+    (suppressKeyStep f x).1 = x.1 := by
+  rfl
+
+/-- For any number of later recurrence loops, the key remains frozen. -/
+theorem suppressed_loops_preserve_key {Key Context : Type}
+    (f : Key × Context → Key × Context) (n : Nat)
+    (x : Key × Context) :
+    (iterStep (suppressKeyStep f) n x).1 = x.1 := by
+  induction n with
+  | zero => rfl
+  | succ n ih =>
+      simpa [iterStep, suppressKeyStep] using ih
+
+/-- Any deterministic readout depending only on that key is invariant. -/
+theorem suppressed_readout_frozen {Key Context Output : Type}
+    (f : Key × Context → Key × Context)
+    (readout : Key → Output) (n : Nat) (x : Key × Context) :
+    readout ((iterStep (suppressKeyStep f) n x).1) = readout x.1 := by
+  rw [suppressed_loops_preserve_key]
+
 #print axioms iterStep_add
 #print axioms shifted_state_remains_shifted
 #print axioms answer_swap_distance_to_future
@@ -111,5 +140,8 @@ theorem context_transplant_retains_phase :
 #print axioms latch_one_to_zero
 #print axioms answer_transplant_selects_next
 #print axioms context_transplant_retains_phase
+#print axioms suppressed_step_preserves_key
+#print axioms suppressed_loops_preserve_key
+#print axioms suppressed_readout_frozen
 
 end MathCan.PhaseLatch
