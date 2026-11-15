@@ -35,22 +35,19 @@ def squareNorm (z : Int × Int) : Int :=
 /-- The first ordering of the same two Jacobians. -/
 theorem upper_after_lower_general (x y : Int) :
     upper (lower (x, y)) = (2 * x + y, x + y) := by
-  simp only [upper, lower]
-  constructor <;> omega
+  simp [upper, lower] <;> omega
 
 /-- The reversed ordering. -/
 theorem lower_after_upper_general (x y : Int) :
     lower (upper (x, y)) = (x + y, x + 2 * y) := by
-  simp only [upper, lower]
-  constructor <;> omega
+  simp [upper, lower] <;> omega
 
 /-- Noncommutativity of two locally unipotent update Jacobians:
     the input-directed difference is (x,-y) for every integer vector. -/
 theorem shear_commutator (x y : Int) :
     (upper (lower (x,y))).1 - (lower (upper (x,y))).1 = x ∧
     (upper (lower (x,y))).2 - (lower (upper (x,y))).2 = -y := by
-  simp only [upper, lower]
-  constructor <;> omega
+  simp [upper, lower] <;> omega
 
 /-- A directional input tangent is amplified differently by two schedules
     with identical per-step operators. -/
@@ -80,13 +77,15 @@ theorem upper_area_preserving (a b c d : Int) :
     (upper (a,b)).1 * (upper (c,d)).2 -
     (upper (a,b)).2 * (upper (c,d)).1 = a*d-b*c := by
   simp only [upper]
-  ring
+  rw [add_mul, mul_add]
+  omega
 
 theorem lower_area_preserving (a b c d : Int) :
     (lower (a,b)).1 * (lower (c,d)).2 -
     (lower (a,b)).2 * (lower (c,d)).1 = a*d-b*c := by
   simp only [lower]
-  ring
+  rw [mul_add, add_mul]
+  omega
 
 #print axioms upper_after_lower_general
 #print axioms lower_after_upper_general
