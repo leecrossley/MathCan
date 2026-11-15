@@ -21,7 +21,7 @@ theorem iterStep_add {State : Type} (f : State → State)
     (n m : Nat) (x : State) :
     iterStep f (n + m) x = iterStep f n (iterStep f m x) := by
   induction n with
-  | zero => rfl
+  | zero => simp [iterStep]
   | succ n ih =>
       simp only [Nat.succ_add, iterStep]
       exact congrArg f ih
