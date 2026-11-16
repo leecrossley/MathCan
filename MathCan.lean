@@ -103,3 +103,5 @@ import MathCan.NOR20BigintWidthBounds
 import MathCan.NOR21ObservationCompleteness
 
 import MathCan.NOR22ModularFutureCommitments
+
+import MathCan.NOR23CoordinateAudit
