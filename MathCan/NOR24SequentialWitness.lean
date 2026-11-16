@@ -37,14 +37,10 @@ theorem checked_equal_targets_have_equal_transcripts
     (a b : Coordinate → Int)
     (h : MathCan.NOR23CoordinateAudit.agreesOn probes a b) :
     readTranscript probes a = readTranscript probes b := by
-  induction probes with
-  | nil => rfl
-  | cons i rest ih =>
-      have hi : a i = b i := h i (by simp)
-      have hrest : MathCan.NOR23CoordinateAudit.agreesOn rest a b := by
-        intro j hj
-        exact h j (by simp [hj])
-      simp [readTranscript, hi, ih hrest]
+  unfold readTranscript
+  apply List.map_congr_left
+  intro i hi
+  exact congrArg (fun v => (i, v)) (h i hi)
 
 /-- A deterministic adaptive selector taking only the public state
 and the revealed transcript chooses the same next coordinate in any
