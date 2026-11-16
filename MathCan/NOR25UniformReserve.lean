@@ -54,12 +54,27 @@ theorem exact_two_stage_blind_count
      binomial remaining.length reserve) := by
   cases targetedHit with
   | false =>
-      simp [missedReserveCount, allReserveCount,
-        MathCan.NOR23CoordinateAudit.fixed_attack_undetected_challenge_count,
-        MathCan.NOR23CoordinateAudit.total_k_coordinate_challenges]
+      change
+        ((MathCan.NOR23CoordinateAudit.kSubsets
+            (remaining.filter (fun modified => !modified)) reserve).length,
+         (MathCan.NOR23CoordinateAudit.kSubsets remaining reserve).length) =
+        (binomial
+           (remaining.length -
+             (remaining.filter (fun modified => modified)).length) reserve,
+         binomial remaining.length reserve)
+      apply Prod.ext
+      · exact MathCan.NOR23CoordinateAudit.fixed_attack_undetected_challenge_count
+          remaining reserve
+      · exact MathCan.NOR23CoordinateAudit.total_k_coordinate_challenges
+          remaining reserve
   | true =>
-      simp [missedReserveCount, allReserveCount,
-        MathCan.NOR23CoordinateAudit.total_k_coordinate_challenges]
+      change
+        (0, (MathCan.NOR23CoordinateAudit.kSubsets remaining reserve).length) =
+        (0, binomial remaining.length reserve)
+      apply Prod.ext
+      · rfl
+      · exact MathCan.NOR23CoordinateAudit.total_k_coordinate_challenges
+          remaining reserve
 
 /-- Choosing an audit prefix that already intersects the changed set
 forces the two-stage verifier's no-hit count to vanish for every reserve. -/
