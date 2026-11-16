@@ -1,10 +1,6 @@
 name: RAM-14 posthoc structural Nat-induction grammar proof audit
 
 on:
-  push:
-    paths:
-      - '.github/workflows/ram14-posthoc-grammar.yml'
-      - 'research/ram14/**'
   workflow_dispatch:
 
 permissions:
