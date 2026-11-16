@@ -66,9 +66,8 @@ theorem indistinguishable_public_and_commitment_worlds
     (hDifferent : targetA ≠ targetB) :
     selector (pubObservation,sig1,sig2) ≠ some targetA ∨
       selector (pubObservation,sig1,sig2) ≠ some targetB := by
-  exact MathCan.NOR21ObservationCompleteness.
-    identical_public_worlds_cannot_both_be_future_correct
-      selector (pubObservation,sig1,sig2) targetA targetB hDifferent
+  exact MathCan.NOR21ObservationCompleteness.identical_public_worlds_cannot_both_be_future_correct
+    selector (pubObservation,sig1,sig2) targetA targetB hDifferent
 
 /-- The concrete moduli and polynomial evaluation point registered in
     the prospective experiment. -/
