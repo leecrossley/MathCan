@@ -5,7 +5,7 @@ import MathCan.NOR22ModularFutureCommitments
 
 This standalone Lean 4.35 proof uses the MathCan core toolchain with
 no external Mathlib dependency. Exact target values at sampled coordinates
-are an *extra authentic witness*, not implied by public program evidence.
+are an *extra authentic witness*, not implied by observation program evidence.
 
 For a list of n distinct coordinates, counting every k-subset by a
 self-contained recursive enumeration gives the binomial recurrence.
@@ -43,10 +43,10 @@ theorem audit_agreement_monotone
     (small big : List Coordinate)
     (candidate target : Coordinate → Int)
     (subset : ∀ i ∈ small, i ∈ big)
-    (matches : agreesOn big candidate target) :
+    (hagrees : agreesOn big candidate target) :
     agreesOn small candidate target := by
   intro i hi
-  exact matches i (subset i hi)
+  exact hagrees i (subset i hi)
 
 /-- If the audit roster covers the entire finite coordinate type,
     checking every listed coefficient is exact full target equality. -/
@@ -99,7 +99,7 @@ theorem adaptive_attacker_has_undetected_alternate_future
   obtain ⟨j, hj⟩ := hasBlindSpot
   exact invisible_single_coordinate_override checked original j hj
 
-/-- The target-independent public observer sees exact integer values
+/-- The target-independent observation observer sees exact integer values
     only at audited coordinates; other positions return no value. -/
 noncomputable def revealedCoordinates
     (checked : List Coordinate)
@@ -112,12 +112,12 @@ noncomputable def revealedCoordinates
 theorem identical_audit_transcripts_of_checked_agreement
     (checked : List Coordinate)
     (a b : Coordinate → Int)
-    (matches : agreesOn checked a b) :
+    (hagrees : agreesOn checked a b) :
     revealedCoordinates checked a = revealedCoordinates checked b := by
   classical
   funext i
   by_cases hi : i ∈ checked
-  · simp [revealedCoordinates, hi, matches i hi]
+  · simp [revealedCoordinates, hi, hagrees i hi]
   · simp [revealedCoordinates, hi]
 
 /-- Public-and-sampled-data observers cannot give two different exact
@@ -126,17 +126,17 @@ theorem identical_public_and_partial_witness_worlds
     (checked : List Coordinate)
     (selector : (Public × (Coordinate → Option Int)) →
       Option (Coordinate → Int))
-    (public : Public)
+    (observation : Public)
     (a b : Coordinate → Int)
-    (matches : agreesOn checked a b)
+    (hagrees : agreesOn checked a b)
     (different : a ≠ b) :
-    selector (public, revealedCoordinates checked a) ≠ some a ∨
-      selector (public, revealedCoordinates checked b) ≠ some b := by
+    selector (observation, revealedCoordinates checked a) ≠ some a ∨
+      selector (observation, revealedCoordinates checked b) ≠ some b := by
   have same :=
-    identical_audit_transcripts_of_checked_agreement checked a b matches
+    identical_audit_transcripts_of_checked_agreement checked a b hagrees
   rw [← same]
   exact MathCan.NOR21ObservationCompleteness.identical_public_worlds_cannot_both_be_future_correct
-    selector (public, revealedCoordinates checked a) a b different
+    selector (observation, revealedCoordinates checked a) a b different
 
 /-- A self-contained binomial coefficient recurrence for choosing k
     positions out of n, including out-of-range k>n. -/
