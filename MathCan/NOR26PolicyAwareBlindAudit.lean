@@ -96,6 +96,7 @@ theorem policy_aware_fixed_attack_mixture_bound
         exact valid v (by simp [hv])
       have hb := any_prefix_conditional_misses_bounded N r reserve p hhead
       have ht := ih htail
+      unfold totalMisses at ht
       simp only [totalMisses, List.map_cons, List.sum_cons,
         List.length_cons, Nat.succ_mul]
       omega
