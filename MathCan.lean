@@ -101,3 +101,5 @@ import MathCan.NOR19StreamedVerifier
 import MathCan.NOR20BigintWidthBounds
 
 import MathCan.NOR21ObservationCompleteness
+
+import MathCan.NOR22ModularFutureCommitments
