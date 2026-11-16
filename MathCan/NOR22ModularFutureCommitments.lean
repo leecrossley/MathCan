@@ -137,6 +137,13 @@ theorem authenticated_target_fingerprint_disagreement
   subst target
   exact h.elim (fun false => false rfl) (fun false => false rfl)
 
+/-- Exactly the recursively computed weight of a terminal coefficient
+    at evaluation point r=3. This avoids assumptions about a power-tactic
+    library and matches the polynomial evaluator definition. -/
+def terminalWeight : Nat → Int
+  | 0 => 1
+  | n + 1 => evaluationPoint * terminalWeight n
+
 /-- Appending a final coefficient change of delta to a polynomial of
     arbitrary length changes evaluation at r=3 by exactly delta*r^n.
     This is the exact source-independent perturbation used at the
@@ -145,15 +152,14 @@ theorem polynomial_terminal_shift_at_three
     (coeffPrefix : List Int) (last delta : Int) :
     polynomialAt3 (coeffPrefix ++ [last+delta]) =
       polynomialAt3 (coeffPrefix ++ [last]) +
-        (evaluationPoint ^ coeffPrefix.length)*delta := by
+        terminalWeight coeffPrefix.length*delta := by
   induction coeffPrefix with
   | nil =>
-      simp [polynomialAt3]
+      simp [polynomialAt3, terminalWeight]
   | cons a rest ih =>
       simp only [List.cons_append, List.length_cons, polynomialAt3]
       rw [ih]
-      rw [pow_succ]
-      simp only [mul_add]
+      simp only [terminalWeight, mul_add]
       ac_rfl
 
 /-- A full p-step in the LAST coefficient is invisible to the
