@@ -125,7 +125,7 @@ def generate(source: str, target: str) -> list[Candidate]:
     definitions = list(dict.fromkeys(definitions))[:3]
     nat_vars = re.findall(r"\(\s*([A-Za-z_][A-Za-z0-9_']*)\s*:\s*Nat\s*\)", header)
     value_vars = [n for n, typ in re.findall(
-        r"\(\s*([A-Za-z_][A-Za-z0-9_']*)\s*:\s*([A-Za-z_][A-Za-z0-9_']*)\s*\)", header)
+        r"\(\s*([A-Za-z_][A-Za-z0-9_']*)\s*:\s*([^\s()]+)\s*\)", header)
         if typ not in ("Nat", "Int", "Bool", "Prop", "Type")]
     gauges = re.findall(
         r"\(\s*([A-Za-z_][A-Za-z0-9_']*)\s*:\s*StateGauge\b[^)]*\)", header)
