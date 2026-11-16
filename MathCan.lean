@@ -99,3 +99,5 @@ import MathCan.NOR18RReciprocalReuse
 import MathCan.NOR19StreamedVerifier
 
 import MathCan.NOR20BigintWidthBounds
+
+import MathCan.NOR21ObservationCompleteness
