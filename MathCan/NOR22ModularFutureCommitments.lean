@@ -137,6 +137,59 @@ theorem authenticated_target_fingerprint_disagreement
   subst target
   exact h.elim (fun false => false rfl) (fun false => false rfl)
 
+/-- Appending a final coefficient change of delta to a polynomial of
+    arbitrary length changes evaluation at r=3 by exactly delta*r^n.
+    This is the exact source-independent perturbation used at the
+    last hidden future coefficient of degree 768 or 1536. -/
+theorem polynomial_terminal_shift_at_three
+    (prefix : List Int) (last delta : Int) :
+    polynomialAt3 (prefix ++ [last+delta]) =
+      polynomialAt3 (prefix ++ [last]) +
+        (evaluationPoint ^ prefix.length)*delta := by
+  induction prefix with
+  | nil =>
+      simp [polynomialAt3]
+  | cons a rest ih =>
+      simp only [List.cons_append, List.length_cons, polynomialAt3]
+      rw [ih]
+      rw [pow_succ]
+      simp only [mul_add]
+      ac_rfl
+
+/-- A full p-step in the LAST coefficient is invisible to the
+    authenticated p fingerprint at any public query degree. -/
+theorem polynomial_terminal_p_collision
+    (prefix : List Int) (last : Int) :
+    targetModFingerprint modulusP (prefix ++ [last+modulusP]) =
+      targetModFingerprint modulusP (prefix ++ [last]) := by
+  unfold targetModFingerprint
+  rw [polynomial_terminal_shift_at_three]
+  unfold modulusP
+  omega
+
+/-- A full p*q-step in the LAST coefficient evades BOTH authenticated
+    short modular fingerprints at every finite query degree. -/
+theorem polynomial_terminal_double_collision
+    (prefix : List Int) (last : Int) :
+    targetModFingerprint modulusP
+      (prefix ++ [last+modulusP*modulusQ]) =
+      targetModFingerprint modulusP (prefix ++ [last]) ∧
+    targetModFingerprint modulusQ
+      (prefix ++ [last+modulusP*modulusQ]) =
+      targetModFingerprint modulusQ (prefix ++ [last]) := by
+  unfold targetModFingerprint
+  constructor
+  · rw [polynomial_terminal_shift_at_three]
+    unfold modulusP modulusQ
+    omega
+  · rw [polynomial_terminal_shift_at_three]
+    unfold modulusP modulusQ
+    omega
+
+#print axioms polynomial_terminal_shift_at_three
+#print axioms polynomial_terminal_p_collision
+#print axioms polynomial_terminal_double_collision
+
 #print axioms authentic_fingerprint_mismatch_proves_wrong_target
 #print axioms authenticated_fingerprint_equal_and_injective_is_sound
 #print axioms self_generated_commitment_is_vacuous
