@@ -73,12 +73,15 @@ theorem sound_budgeted_public_output_certificate
     (rejectionSound : ∀ p, rejected p → ¬ fullAccepted p)
     (unanimity : ∀ p, prefixAccepted p → ¬ rejected p →
        queryPrediction p = queryPrediction chosen) :
-    queryPrediction planted = queryPrediction chosen := by
-  have hPrefix := prefixSound planted trueAccepted
-  have hNotRejected : ¬ rejected planted :=
-    true_program_survives_full_rejections
-      fullAccepted rejected planted rejectionSound trueAccepted
-  exact unanimity planted hPrefix hNotRejected
+    fullAccepted chosen ∧
+      queryPrediction planted = queryPrediction chosen := by
+  constructor
+  · exact chosenAccepted
+  · have hPrefix := prefixSound planted trueAccepted
+    have hNotRejected : ¬ rejected planted :=
+      true_program_survives_full_rejections
+        fullAccepted rejected planted rejectionSound trueAccepted
+    exact unanimity planted hPrefix hNotRejected
 
 /-- Once candidate exclusion is sound, eliminating more candidates
     preserves any existing common predicted-output certificate. This
