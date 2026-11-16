@@ -105,3 +105,5 @@ import MathCan.NOR21ObservationCompleteness
 import MathCan.NOR22ModularFutureCommitments
 
 import MathCan.NOR23CoordinateAudit
+
+import MathCan.NOR24SequentialWitness
