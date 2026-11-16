@@ -7,7 +7,7 @@ This standalone Lean 4.35 proof uses the MathCan core toolchain with
 no external Mathlib dependency. Exact target values at sampled coordinates
 are an *extra authentic witness*, not implied by observation program evidence.
 
-For a list of n distinct coordinates, counting every k-subset by a
+For n indexed coordinates, counting every k-position selection path by a
 self-contained recursive enumeration gives the binomial recurrence.
 A Boolean attack mask partitions n coordinates into r altered and n-r
 unaltered positions. Hence exact undetected k-subset count is C(n-r,k),
@@ -146,8 +146,9 @@ def binomial : Nat → Nat → Nat
   | _ + 1, 0 => 1
   | n + 1, k + 1 => binomial n k + binomial n (k + 1)
 
-/-- Exhaustive list of ordered-within-universe k-subsets. Distinct input
-    coordinates make each output a distinct mathematical subset. -/
+/-- Exhaustive k-position choices from a list. Repeated Boolean values
+    can yield duplicate value-lists, but each enumeration path selects
+    a distinct subset of original coordinate positions. -/
 def kSubsets {α : Type u} : List α → Nat → List (List α)
   | [], 0 => [[]]
   | [], _ + 1 => []
@@ -155,7 +156,7 @@ def kSubsets {α : Type u} : List α → Nat → List (List α)
   | x :: xs, k + 1 =>
       (kSubsets xs k).map (fun ys => x :: ys) ++ kSubsets xs (k + 1)
 
-/-- Every k-subset of a list is counted exactly by the binomial
+/-- Every k-position selection path is counted by the binomial
     recurrence, proved by list induction without library combinatorics. -/
 theorem k_subset_count_is_binomial {α : Type u}
     (xs : List α) (k : Nat) :
