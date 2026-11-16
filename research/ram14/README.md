@@ -43,10 +43,10 @@ The original 20-family RAM-08 grammar creates `induction_list` candidates for li
 
 For a bijective state coordinate map `g`, define the transported update `T_g = g ∘ f ∘ g⁻¹`. The original source identities are
 
-[
-T_g^n(g(x)) = g(f^n(x)), qquad
+\[
+T_g^n(g(x)) = g(f^n(x)), \qquad
 \rho(g^{-1}(T_g^n(g(x)))) = \rho(f^n(x)).
-]
+\]
 
 The first follows by induction on `n`, generalizing `x` so the induction hypothesis is available after one update `f(x)`. The second follows from the earlier transport identity and the inverse law. These are established original MathCan statements, and the RAM-14 contribution is an auditable **tactic-generation mechanism**, not a claim of a new theorem.
 
