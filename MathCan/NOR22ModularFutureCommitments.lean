@@ -159,7 +159,8 @@ theorem polynomial_terminal_shift_at_three
   | cons a rest ih =>
       simp only [List.cons_append, List.length_cons, polynomialAt3]
       rw [ih]
-      simp only [terminalWeight, mul_add]
+      simp only [terminalWeight]
+      rw [Int.mul_add]
       ac_rfl
 
 /-- A full p-step in the LAST coefficient is invisible to the
