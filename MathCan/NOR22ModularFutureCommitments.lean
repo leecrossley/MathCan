@@ -142,11 +142,11 @@ theorem authenticated_target_fingerprint_disagreement
     This is the exact source-independent perturbation used at the
     last hidden future coefficient of degree 768 or 1536. -/
 theorem polynomial_terminal_shift_at_three
-    (prefix : List Int) (last delta : Int) :
-    polynomialAt3 (prefix ++ [last+delta]) =
-      polynomialAt3 (prefix ++ [last]) +
-        (evaluationPoint ^ prefix.length)*delta := by
-  induction prefix with
+    (coeffPrefix : List Int) (last delta : Int) :
+    polynomialAt3 (coeffPrefix ++ [last+delta]) =
+      polynomialAt3 (coeffPrefix ++ [last]) +
+        (evaluationPoint ^ coeffPrefix.length)*delta := by
+  induction coeffPrefix with
   | nil =>
       simp [polynomialAt3]
   | cons a rest ih =>
@@ -159,9 +159,9 @@ theorem polynomial_terminal_shift_at_three
 /-- A full p-step in the LAST coefficient is invisible to the
     authenticated p fingerprint at any public query degree. -/
 theorem polynomial_terminal_p_collision
-    (prefix : List Int) (last : Int) :
-    targetModFingerprint modulusP (prefix ++ [last+modulusP]) =
-      targetModFingerprint modulusP (prefix ++ [last]) := by
+    (coeffPrefix : List Int) (last : Int) :
+    targetModFingerprint modulusP (coeffPrefix ++ [last+modulusP]) =
+      targetModFingerprint modulusP (coeffPrefix ++ [last]) := by
   unfold targetModFingerprint
   rw [polynomial_terminal_shift_at_three]
   unfold modulusP
@@ -170,13 +170,13 @@ theorem polynomial_terminal_p_collision
 /-- A full p*q-step in the LAST coefficient evades BOTH authenticated
     short modular fingerprints at every finite query degree. -/
 theorem polynomial_terminal_double_collision
-    (prefix : List Int) (last : Int) :
+    (coeffPrefix : List Int) (last : Int) :
     targetModFingerprint modulusP
-      (prefix ++ [last+modulusP*modulusQ]) =
-      targetModFingerprint modulusP (prefix ++ [last]) ∧
+      (coeffPrefix ++ [last+modulusP*modulusQ]) =
+      targetModFingerprint modulusP (coeffPrefix ++ [last]) ∧
     targetModFingerprint modulusQ
-      (prefix ++ [last+modulusP*modulusQ]) =
-      targetModFingerprint modulusQ (prefix ++ [last]) := by
+      (coeffPrefix ++ [last+modulusP*modulusQ]) =
+      targetModFingerprint modulusQ (coeffPrefix ++ [last]) := by
   unfold targetModFingerprint
   constructor
   · rw [polynomial_terminal_shift_at_three]
