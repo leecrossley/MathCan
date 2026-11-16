@@ -46,8 +46,8 @@ theorem authenticated_fingerprint_equal_and_injective_is_sound
     (fingerprint : Target → Digest)
     (hInjective : Function.Injective fingerprint)
     (proposed actual : Target)
-    (matches : fingerprint proposed = fingerprint actual) :
-    proposed = actual := hInjective matches
+    (hMatches : fingerprint proposed = fingerprint actual) :
+    proposed = actual := hInjective hMatches
 
 /-- A candidate that generates its own alleged commitment learns
     nothing about the true target: the comparison always succeeds. -/
@@ -61,14 +61,14 @@ theorem self_generated_commitment_is_vacuous
 theorem indistinguishable_public_and_commitment_worlds
     {D1 : Type v} {D2 : Type u}
     (selector : (Public × D1 × D2) → Option Target)
-    (public : Public) (sig1 : D1) (sig2 : D2)
+    (pubObservation : Public) (sig1 : D1) (sig2 : D2)
     (targetA targetB : Target)
     (hDifferent : targetA ≠ targetB) :
-    selector (public,sig1,sig2) ≠ some targetA ∨
-      selector (public,sig1,sig2) ≠ some targetB := by
+    selector (pubObservation,sig1,sig2) ≠ some targetA ∨
+      selector (pubObservation,sig1,sig2) ≠ some targetB := by
   exact MathCan.NOR21ObservationCompleteness.
     identical_public_worlds_cannot_both_be_future_correct
-      selector (public,sig1,sig2) targetA targetB hDifferent
+      selector (pubObservation,sig1,sig2) targetA targetB hDifferent
 
 /-- The concrete moduli and polynomial evaluation point registered in
     the prospective experiment. -/
