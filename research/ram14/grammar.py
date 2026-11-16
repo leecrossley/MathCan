@@ -131,9 +131,14 @@ def generate(source: str, target: str) -> list[Candidate]:
         r"\(\s*([A-Za-z_][A-Za-z0-9_']*)\s*:\s*StateGauge\b[^)]*\)", header)
     # The inverse-law fields must already be declared in a visible structure
     # before the theorem, as opposed to invented by a script template.
+    # Read structural field names only from the preceding *structure
+    # declaration* block, never from an earlier theorem's proof body.
+    structure = re.search(r"^structure\s+StateGauge\b[^\n]*(?:\n(?!(?:def|theorem|lemma|structure|namespace|end)\b)[^\n]*)*",
+                          previous, re.M)
+    visible_struct = structure.group(0) if structure else ""
     fields = [f"{g}.{field}" for g in gauges[:1]
               for field in ("left_inv", "right_inv")
-              if re.search(r"^\s+" + field + r"\s*:", previous, re.M)]
+              if re.search(r"^\s+" + field + r"\s*:", visible_struct, re.M)]
     inv = fields[:1]
     deflist = definitions[:2]
     all_lemmas = deflist + inv
