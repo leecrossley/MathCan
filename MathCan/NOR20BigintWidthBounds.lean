@@ -80,8 +80,8 @@ theorem packed_buffer_saving_scales_with_width
     (n b : Nat) :
     idealMaterializationBits 4 32 n b =
       idealMaterializationBits 4 0 n b + 32*n*b := by
-  simp [idealMaterializationBits, Nat.add_mul, Nat.mul_add]
-  omega
+  change (4+32)*n*b = 4*n*b + 32*n*b
+  rw [Nat.add_mul, Nat.add_mul]
 
 /-- The four-at-a-time design lies between the zero-output streamer and
     full eager two-demo caching under the same packed-slot assumption. -/
@@ -89,8 +89,8 @@ theorem four_candidate_chunk_packed_saving
     (n b : Nat) :
     idealMaterializationBits 4 32 n b =
       idealMaterializationBits 4 4 n b + 28*n*b := by
-  simp [idealMaterializationBits, Nat.add_mul, Nat.mul_add]
-  omega
+  change ((4+4)+28)*n*b = (4+4)*n*b + 28*n*b
+  rw [Nat.add_mul, Nat.add_mul]
 
 /-- A larger *actual* per-coefficient width cannot decrease the packed
     output-array saving of direct streaming. -/
