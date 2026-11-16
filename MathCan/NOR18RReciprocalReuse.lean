@@ -40,15 +40,18 @@ theorem sound_prefix_filter_preserves_full_acceptance
     (hSound : ∀ p, fullAccepted p = true → prefixAccepted p = true) :
     acceptedSet (acceptedSet candidates prefixAccepted) fullAccepted =
       acceptedSet candidates fullAccepted := by
-  induction candidates with
-  | nil =>
-      rfl
-  | cons c rest ih =>
-      by_cases hf : fullAccepted c = true
-      · have hp := hSound c hf
-        simp [acceptedSet, List.filter_cons, hf, hp, ih]
-      · cases hp : prefixAccepted c <;>
-          simp [acceptedSet, List.filter_cons, hf, hp, ih]
+  have hPredicate : (fun p => fullAccepted p && prefixAccepted p) =
+        fullAccepted := by
+    funext p
+    cases hf : fullAccepted p with
+    | false =>
+        simp [hf]
+    | true =>
+        have hp : prefixAccepted p = true := hSound p hf
+        simp [hf, hp]
+  unfold acceptedSet
+  simp only [List.filter_filter]
+  rw [hPredicate]
 
 /-- Native R invocations per demonstration: eight U/V uses, plus
     sixteen extra invocations when the fixed public base is R. -/
