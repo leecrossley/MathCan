@@ -26,19 +26,18 @@ universe u
 variable {Coordinate : Type u}
 
 abbrev binomial := MathCan.NOR23CoordinateAudit.binomial
-abbrev kSubsets := MathCan.NOR23CoordinateAudit.kSubsets
 
 /-- Whether the risk-targeted prefix has already encountered any
 changed coefficient. The remaining mask indexes only unchecked positions. -/
 def missedReserveCount
     (targetedHit : Bool) (remaining : List Bool) (reserve : Nat) : Nat :=
   if targetedHit then 0
-  else (kSubsets (remaining.filter (fun modified => !modified)) reserve).length
+  else (MathCan.NOR23CoordinateAudit.kSubsets (remaining.filter (fun modified => !modified)) reserve).length
 
 /-- Each size-u position-subset of unchecked positions is an equally
 likely audit schedule under ideal uniform sampling without replacement. -/
 def allReserveCount (remaining : List Bool) (reserve : Nat) : Nat :=
-  (kSubsets remaining reserve).length
+  (MathCan.NOR23CoordinateAudit.kSubsets remaining reserve).length
 
 /-- Exact numerator and denominator for any fixed attack after a
 public-risk prefix. When the prefix hit, the miss numerator is zero.
