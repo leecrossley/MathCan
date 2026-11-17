@@ -117,3 +117,5 @@ import MathCan.NOR27SeedLeakage
 import MathCan.NOR28CommitBeforeEntropy
 
 import MathCan.NOR29EarlyEntropyGame
+
+import MathCan.NOR30MixedAudit
