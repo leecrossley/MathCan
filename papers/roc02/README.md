@@ -26,6 +26,8 @@ python papers/roc02/roc04b_reserved_signflip_v01.py
 python papers/roc02/roc05a_b_primary_audit_v01.py
 ```
 
-The checks use Python's standard library and retain original Git blob SHA-1 provenance for the copied empirical CSVs. Model-weight and per-case replay receipts are published separately in [LoopedTransformers ROC-05A #162](https://github.com/MoralityLabAI/LoopedTransformers/pull/162) and [ROC-05B #163](https://github.com/MoralityLabAI/LoopedTransformers/pull/163), with the successful original-model full causal audit [run #44107080894](https://github.com/MoralityLabAI/LoopedTransformers/actions/runs/44107080894).
+The checks use Python's standard library and retain original Git blob SHA-1 provenance for the copied empirical CSVs.
+
+The [ROC-05B complete raw-null addendum](ROC05B_FULL_NULL_REPRODUCIBILITY_ADDENDUM.md) records the separately hosted 3,072 rank-matched null rows, the independent 288-test empirical/Holm audit, and both original/expanded SHA-pinned 69-file causal archives. All preserve the original six-seed negative mechanism finding. Model-weight and per-case replay receipts are published separately in [LoopedTransformers ROC-05A #162](https://github.com/MoralityLabAI/LoopedTransformers/pull/162) and [ROC-05B #163](https://github.com/MoralityLabAI/LoopedTransformers/pull/163), with the successful original-model full causal audit [run #44107080894](https://github.com/MoralityLabAI/LoopedTransformers/actions/runs/44107080894).
 
 The empirical studies concern eight-label synthetic rule-binding tasks with an explicitly routed query. Complete ROC-01 five-mechanism identification, an independently reserved ROC-05 test, and broader model-family comparisons require separate prospectively locked experiments.
