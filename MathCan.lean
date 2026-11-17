@@ -129,3 +129,5 @@ import MathCan.NOR32UnknownSupportCoverage
 import MathCan.NOR32NestedAuditCoverage
 
 import MathCan.NOR33OverlapMatchedCoverage
+
+import MathCan.NOR34EightAtomMatchedCoverage
