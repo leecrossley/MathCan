@@ -26,6 +26,7 @@ jobs:
         run: |
           python -m compileall -q papers/roc02
           python papers/roc02/roc02_primary_signflip_v01.py
+          python papers/roc02/roc04a_primary_signflip_v01.py
           python - <<'PY'
           from pathlib import Path
           import csv
@@ -34,4 +35,11 @@ jobs:
           assert "0.375" in x and "3/6" in x
           assert "sealed" in x.lower() and "calibration" in x.lower()
           assert len(list(csv.DictReader(open("papers/roc02/ROC02_primary_six_seed_v01.csv")))) == 6
+          new=Path("papers/roc02/ROC02_Observer_Causal_Update_v02_20261117.md").read_text()
+          assert "version 0.2" in new
+          assert "0.015625" in new and "0.4778645833" in new
+          assert "4/6" in new and "0/6" in new
+          assert "reserved" in new.lower() and "families 6" in new.lower()
+          assert len(list(csv.DictReader(open("papers/roc02/ROC04A_primary_six_seed_v01.csv")))) == 6
+          assert "ROC02_Observer_Causal_Update_v02_20261117.md" in Path("papers/roc02/README.md").read_text()
           PY
