@@ -131,3 +131,5 @@ import MathCan.NOR32NestedAuditCoverage
 import MathCan.NOR33OverlapMatchedCoverage
 
 import MathCan.NOR34EightAtomMatchedCoverage
+
+import MathCan.NOR35IntraAtomCurvature
