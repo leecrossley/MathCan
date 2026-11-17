@@ -70,7 +70,10 @@ theorem uniform_permutation_relabeling_bijective {α : Type u}
   constructor
   · intro a b h
     have hh := congrArg (undoFixedRanking inverseRanking) h
-    simpa [undo_after_apply, right] using hh
+    have ha := undo_after_apply ranking inverseRanking a right
+    have hb := undo_after_apply ranking inverseRanking b right
+    rw [ha, hb] at hh
+    exact hh
   · intro target
     refine ⟨undoFixedRanking inverseRanking target, ?_⟩
     exact apply_after_undo ranking inverseRanking target left
