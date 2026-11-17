@@ -26,23 +26,23 @@ universe u
 
 /-- An arbitrary rank ordering is a bijection of coordinate indices. -/
 def applyFixedRanking {α : Type u}
-    (ranking : α ≃ α) (sampled : α ≃ α) : α ≃ α :=
+    (ranking : Equiv α α) (sampled : Equiv α α) : Equiv α α :=
   ranking.trans sampled
 
 /-- Composition with the inverse ranking undoes the relabeling. -/
 def undoFixedRanking {α : Type u}
-    (ranking : α ≃ α) (sampled : α ≃ α) : α ≃ α :=
+    (ranking : Equiv α α) (sampled : Equiv α α) : Equiv α α :=
   ranking.symm.trans sampled
 
 theorem undo_after_apply {α : Type u}
-    (ranking sampled : α ≃ α) :
+    (ranking sampled : Equiv α α) :
     undoFixedRanking ranking (applyFixedRanking ranking sampled) = sampled := by
   apply Equiv.ext
   intro x
   simp [applyFixedRanking, undoFixedRanking]
 
 theorem apply_after_undo {α : Type u}
-    (ranking sampled : α ≃ α) :
+    (ranking sampled : Equiv α α) :
     applyFixedRanking ranking (undoFixedRanking ranking sampled) = sampled := by
   apply Equiv.ext
   intro x
@@ -52,7 +52,7 @@ theorem apply_after_undo {α : Type u}
     with a fixed ranking. This supplies a measure-preserving bijection
     for the uniform distribution on finite permutations. -/
 theorem uniform_permutation_relabeling_bijective {α : Type u}
-    (ranking : α ≃ α) :
+    (ranking : Equiv α α) :
     Function.Bijective (applyFixedRanking ranking) := by
   constructor
   · intro a b h
@@ -65,7 +65,7 @@ theorem uniform_permutation_relabeling_bijective {α : Type u}
 /-- For each fixed first-k coordinate observation, exact uniform
     permutation counting is preserved under the ranking relabeling. -/
 theorem permuted_ranking_sample_is_uniform_reindexing {α : Type u}
-    (ranking : α ≃ α) (sampled : α ≃ α) (coordinate : α) :
+    (ranking : Equiv α α) (sampled : Equiv α α) (coordinate : α) :
     applyFixedRanking ranking sampled coordinate =
       sampled (ranking coordinate) := by
   rfl
@@ -100,8 +100,9 @@ theorem template_floor_excludes_uniform_only
     0 < riskWeight := by
   by_contra h
   have zero : riskWeight = 0 := Nat.eq_zero_of_not_pos h
-  simp [zero] at feasible
-  omega
+  have hfloor : floor ≤ uniformWeight*uniformTemplate := by
+    simpa [zero] using feasible
+  exact (Nat.not_le_of_gt uniformInsufficient) hfloor
 
 /-- An exact historical template lower-bound constraint remains valid
     after combining two equivalent uniform arms with equal per-arm
