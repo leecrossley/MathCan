@@ -27,6 +27,7 @@ jobs:
           python -m compileall -q papers/roc02
           python papers/roc02/roc02_primary_signflip_v01.py
           python papers/roc02/roc04a_primary_signflip_v01.py
+          python papers/roc02/roc04b_reserved_signflip_v01.py
           python - <<'PY'
           from pathlib import Path
           import csv
@@ -42,4 +43,13 @@ jobs:
           assert "reserved" in new.lower() and "families 6" in new.lower()
           assert len(list(csv.DictReader(open("papers/roc02/ROC04A_primary_six_seed_v01.csv")))) == 6
           assert "ROC02_Observer_Causal_Update_v02_20261117.md" in Path("papers/roc02/README.md").read_text()
+          roc04b=Path("papers/roc02/ROC02_Observer_Causal_Update_v03_20261117.md").read_text()
+          assert "version 0.3" in roc04b and "0.51953125" in roc04b
+          assert "0.015625" in roc04b and "11.89%" in roc04b
+          assert "first hosted attempt" in roc04b.lower() and "6–7" in roc04b
+          assert "Competence gate" in roc04b or "competence gate" in roc04b
+          assert len(list(csv.DictReader(open("papers/roc02/ROC04B_reserved_test_by_seed_v01.csv"))))==6
+          idx=Path("papers/roc02/README.md").read_text()
+          assert "ROC02_Observer_Causal_Update_v03_20261117.md" in idx
+          assert "have now been evaluated" in idx
           PY
