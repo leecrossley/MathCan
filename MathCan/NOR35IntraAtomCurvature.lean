@@ -92,10 +92,10 @@ theorem independent_intraatom_reserve_product
       have ihmiss := congrArg Prod.fst ih
       have ihtotal := congrArg Prod.snd ih
       apply Prod.ext
-      · simpa [missedReserveWorlds,exactBinomialMisses] using
-          congrArg₂ Nat.mul hmiss ihmiss
-      · simpa [totalReserveWorlds,exactBinomialTotal] using
-          congrArg₂ Nat.mul htotal ihtotal
+      · simp only [missedReserveWorlds,exactBinomialMisses]
+        rw [hmiss,ihmiss]
+      · simp only [totalReserveWorlds,exactBinomialTotal]
+        rw [htotal,ihtotal]
 
 /-- Exact atom quota sufficiency: each reranked audit that preserves
     its source/trial eight-atom inspection counts has the SAME
