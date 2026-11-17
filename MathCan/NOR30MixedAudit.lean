@@ -54,15 +54,15 @@ theorem any_mixed_policy_inherits_certified_floor
     (sound : ∀ a ∈ arms, a.lower ≤ a.observed) :
     weightedLower arms ≤ weightedObserved arms := by
   induction arms with
-  | nil => rfl
+  | nil => simp [weightedLower, weightedObserved]
   | cons a rest ih =>
       have ha : a.lower ≤ a.observed := sound a (by simp)
       have hr : ∀ x ∈ rest, x.lower ≤ x.observed := by
         intro x hx
         exact sound x (by simp [hx])
-      have rec := ih hr
+      have hrestBound := ih hr
       have left := Nat.mul_le_mul_left a.weight ha
-      exact Nat.add_le_add left rec
+      simpa [weightedLower, weightedObserved] using Nat.add_le_add left hrestBound
 
 /-- One positive uniform reserve component forces a strictly positive
     integer lower floor in the mixed score for every finite remainder
