@@ -123,3 +123,5 @@ import MathCan.NOR30MixedAudit
 import MathCan.NOR31MatchedRootCalibration
 
 import MathCan.NOR31ClassCollapsedMinimax
+
+import MathCan.NOR32UnknownSupportCoverage
