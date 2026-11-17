@@ -54,23 +54,18 @@ theorem exact_unknown_support_attack_miss_and_total
   exact MathCan.NOR23CoordinateAudit.exact_hypergeometric_miss_pair
     supportMask radius
 
-/-- A conditional exact rational miss probability under uniformly
-    sampled r-position alterations from the declared support. This
-    includes the case of a size-96 unfamiliar procedure-generated support. -/
-theorem exact_unknown_support_miss_fraction
+/-- The exact integer numerator/denominator pair is the data required
+    to interpret a conditional uniform-r attack miss probability.
+    Its probability interpretation is C(s-t,r)/C(s,r) whenever the
+    denominator is positive. Coercion to a rational implementation is
+    deliberately kept outside this standalone Init-only module. -/
+theorem exact_unknown_support_probability_numerator_denominator
     (supportMask : List Bool) (radius : Nat) :
-    (undetectedAttackPlacements supportMask radius : ℚ) /
-      (candidateAttacks supportMask radius : ℚ) =
-    (choose (supportMask.length - inspectedCount supportMask) radius : ℚ) /
-      (choose supportMask.length radius : ℚ) := by
-  rw [show undetectedAttackPlacements supportMask radius =
-       choose (supportMask.length - inspectedCount supportMask) radius
-       from congrArg Prod.fst
-         (exact_unknown_support_attack_miss_and_total supportMask radius)]
-  rw [show candidateAttacks supportMask radius =
-       choose supportMask.length radius
-       from congrArg Prod.snd
-         (exact_unknown_support_attack_miss_and_total supportMask radius)]
+    (undetectedAttackPlacements supportMask radius,
+     candidateAttacks supportMask radius) =
+    (choose (supportMask.length - inspectedCount supportMask) radius,
+     choose supportMask.length radius) :=
+  exact_unknown_support_attack_miss_and_total supportMask radius
 
 /-- Under a uniform r-attack distribution on the full m-coordinate
     future, two fixed audits of the same k positions have IDENTICAL
@@ -134,7 +129,7 @@ theorem informed_unknown_support_counterexample
     inspected trueTarget hasUnchecked
 
 #print axioms exact_unknown_support_attack_miss_and_total
-#print axioms exact_unknown_support_miss_fraction
+#print axioms exact_unknown_support_probability_numerator_denominator
 #print axioms equal_budget_uniform_attack_detectability
 #print axioms finite_audit_mixture_uniform_attack_counts_invariant
 #print axioms informed_unknown_support_counterexample
