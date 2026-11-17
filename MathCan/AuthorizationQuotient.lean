@@ -118,6 +118,95 @@ theorem toy_certified_inspection_suffices :
       ∀ s, classify s = toyAuthorization s := by
   exact ⟨toyAuthorization, fun _ => rfl⟩
 
+/-! ## AUTHQ-02: finite inspection-budget obstruction
+
+Each row represents two matched worlds with identical public observations
+and opposing authorizations. Without an inspection, an observation-only
+policy produces the same retention decision on both. Every inspected root
+pair can contribute at most one unit to authorized-vs-unauthorized retention
+discrimination; this is independent of the inspection algorithm.
+-/
+
+structure PairedDecision where
+  audited : Bool
+  retainPermitted : Bool
+  retainForbidden : Bool
+
+def retainedPermitted (xs : List PairedDecision) : Nat :=
+  (xs.map fun x => if x.retainPermitted then 1 else 0).sum
+
+def retainedForbidden (xs : List PairedDecision) : Nat :=
+  (xs.map fun x => if x.retainForbidden then 1 else 0).sum
+
+def inspectedPairs (xs : List PairedDecision) : Nat :=
+  (xs.map fun x => if x.audited then 1 else 0).sum
+
+/-- One indistinguishable, unaudited pair contributes no positive
+    discrimination; one audited pair adds at most one. -/
+theorem paired_single_bound (x : PairedDecision)
+    (h : x.audited = false → x.retainPermitted = x.retainForbidden) :
+    (if x.retainPermitted then (1 : Nat) else 0) ≤
+    (if x.retainForbidden then 1 else 0) +
+    (if x.audited then 1 else 0) := by
+  cases ha : x.audited <;>
+    cases hp : x.retainPermitted <;>
+    cases hf : x.retainForbidden <;>
+    simp_all
+
+/-- Number of authorized-world retain decisions is bounded by the
+    unauthorized-world retain count plus the number of inspected root pairs. -/
+theorem paired_inspection_budget_bound (xs : List PairedDecision)
+    (h : ∀ x ∈ xs, x.audited = false →
+      x.retainPermitted = x.retainForbidden) :
+    retainedPermitted xs ≤ retainedForbidden xs + inspectedPairs xs := by
+  revert h
+  induction xs with
+  | nil =>
+      intro _
+      simp [retainedPermitted, retainedForbidden, inspectedPairs]
+  | cons head tail ih =>
+      intro h
+      have headInvariant :
+          head.audited = false →
+          head.retainPermitted = head.retainForbidden :=
+        h head (by simp)
+      have tailInvariant :
+          ∀ x ∈ tail, x.audited = false →
+            x.retainPermitted = x.retainForbidden := by
+        intro x hx
+        exact h x (by simp [hx])
+      have headBound := paired_single_bound head headInvariant
+      have tailBound := ih tailInvariant
+      simp only [retainedPermitted, retainedForbidden, inspectedPairs,
+        List.map_cons, List.sum_cons] at tailBound ⊢
+      omega
+
+/-- Any total inspection budget bounds the possible increase in
+    authorization discrimination over N balanced world pairs. -/
+theorem paired_inspection_at_most_budget
+    (xs : List PairedDecision) (budget : Nat)
+    (h : ∀ x ∈ xs, x.audited = false →
+      x.retainPermitted = x.retainForbidden)
+    (hb : inspectedPairs xs ≤ budget) :
+    retainedPermitted xs ≤ retainedForbidden xs + budget := by
+  have point := paired_inspection_budget_bound xs h
+  omega
+
+/-- The per-root inequality is sharp with one exact truth-revealing audit. -/
+theorem paired_single_bound_sharp :
+    retainedPermitted
+        [{ audited := true, retainPermitted := true, retainForbidden := false }] =
+      retainedForbidden
+        [{ audited := true, retainPermitted := true, retainForbidden := false }] +
+      inspectedPairs
+        [{ audited := true, retainPermitted := true, retainForbidden := false }] := by
+  decide
+
+#print axioms paired_single_bound
+#print axioms paired_inspection_budget_bound
+#print axioms paired_inspection_at_most_budget
+#print axioms paired_single_bound_sharp
+
 #print axioms classifier_exists_iff_fiber
 #print axioms collision_forces_error
 #print axioms coarse_compatible_implies_fine
