@@ -69,11 +69,14 @@ theorem exact_eight_atom_total_placements
       cases quotas with
       | nil => rfl
       | cons quota qs =>
-          have hhead :=
-            congrArg Prod.snd
-              (MathCan.NOR32UnknownSupportCoverage.exact_unknown_support_attack_miss_and_total
-                cell quota)
-          simp only [totalPlacements, totalBinomial, subsetCount]
+          have hhead : subsetCount cell quota = choose cell.length quota := by
+            simpa [subsetCount, choose,
+                    MathCan.NOR32UnknownSupportCoverage.candidateAttacks,
+                    MathCan.NOR32UnknownSupportCoverage.choose] using
+              (congrArg Prod.snd
+                (MathCan.NOR32UnknownSupportCoverage.exact_unknown_support_attack_miss_and_total
+                  cell quota))
+          simp only [totalPlacements, totalBinomial]
           rw [hhead, ih]
 
 theorem exact_eight_atom_missed_placements
@@ -86,11 +89,16 @@ theorem exact_eight_atom_missed_placements
       cases quotas with
       | nil => rfl
       | cons quota qs =>
-          have hhead :=
-            congrArg Prod.fst
-              (MathCan.NOR32UnknownSupportCoverage.exact_unknown_support_attack_miss_and_total
-                cell quota)
-          simp only [missedPlacements, missedBinomial, cleanSubsetCount]
+          have hhead : cleanSubsetCount cell quota =
+              choose (cell.length - inspectedCount cell) quota := by
+            simpa [cleanSubsetCount, choose, inspectedCount,
+                    MathCan.NOR32UnknownSupportCoverage.undetectedAttackPlacements,
+                    MathCan.NOR32UnknownSupportCoverage.choose,
+                    MathCan.NOR32UnknownSupportCoverage.inspectedCount] using
+              (congrArg Prod.fst
+                (MathCan.NOR32UnknownSupportCoverage.exact_unknown_support_attack_miss_and_total
+                  cell quota))
+          simp only [missedPlacements, missedBinomial]
           rw [hhead, ih]
 
 theorem eight_atom_hypergeometric_count_pair
@@ -99,9 +107,8 @@ theorem eight_atom_hypergeometric_count_pair
       (missedBinomial cells quotas, totalBinomial cells quotas) := by
   rw [exact_eight_atom_missed_placements, exact_eight_atom_total_placements]
 
-/-- The eight atom population sizes and the eight inspected counts are
-    jointly sufficient for the conditional missing-attack count under
-    any fixed quota vector. -/
+/-- Equal atom population and inspected-count vectors give identical
+    conditional quota-matched attack numerator and denominator counts. -/
 theorem matched_atom_statistics_give_equal_count_pair
     (first second : List (List Bool))
     (quotas : List Nat)
@@ -109,14 +116,14 @@ theorem matched_atom_statistics_give_equal_count_pair
     (sameChecked : first.map inspectedCount = second.map inspectedCount) :
     (missedPlacements first quotas, totalPlacements first quotas) =
       (missedPlacements second quotas, totalPlacements second quotas) := by
-  rw [eight_atom_hypergeometric_count_pair,
-      eight_atom_hypergeometric_count_pair]
-  have hm : missedBinomial first quotas = missedBinomial second quotas := by
+  have hbins :
+      (missedBinomial first quotas, totalBinomial first quotas) =
+        (missedBinomial second quotas, totalBinomial second quotas) := by
     induction first generalizing second quotas with
     | nil =>
         cases second with
         | nil => cases quotas <;> rfl
-        | cons h t => cases sameLengths
+        | cons s ss => cases sameLengths
     | cons f fs ih =>
         cases second with
         | nil => cases sameLengths
@@ -130,40 +137,28 @@ theorem matched_atom_statistics_give_equal_count_pair
             have htail : fs.map List.length = ss.map List.length := by
               have h := congrArg List.tail sameLengths
               simpa using h
-            have htailChecked : fs.map inspectedCount = ss.map inspectedCount := by
+            have htailchecked : fs.map inspectedCount = ss.map inspectedCount := by
               have h := congrArg List.tail sameChecked
               simpa using h
             cases quotas with
             | nil => rfl
             | cons q qs =>
-                simp only [missedBinomial]
-                rw [hlen, hchecked]
-                exact congrArg (fun n => choose (s.length - inspectedCount s) q * n)
-                  (ih ss qs htail htailChecked)
-  have ht : totalBinomial first quotas = totalBinomial second quotas := by
-    induction first generalizing second quotas with
-    | nil =>
-        cases second with
-        | nil => cases quotas <;> rfl
-        | cons s ss => cases sameLengths
-    | cons f fs ih =>
-        cases second with
-        | nil => cases sameLengths
-        | cons s ss =>
-            have hlen : f.length = s.length := by
-              have h := congrArg List.head? sameLengths
-              simpa using h
-            have htail : fs.map List.length = ss.map List.length := by
-              have h := congrArg List.tail sameLengths
-              simpa using h
-            cases quotas with
-            | nil => rfl
-            | cons q qs =>
-                simp only [totalBinomial]
-                rw [hlen]
-                exact congrArg (fun n => choose s.length q * n)
-                  (ih ss qs htail)
-  exact Prod.mk.injEq.mpr ⟨hm, ht⟩
+                have hrecur := ih ss qs htail htailchecked
+                have hm := congrArg Prod.fst hrecur
+                have ht := congrArg Prod.snd hrecur
+                apply Prod.ext
+                · simpa [missedBinomial, hlen, hchecked] using
+                    (congrArg
+                      (fun n => choose (s.length - inspectedCount s) q * n) hm)
+                · simpa [totalBinomial, hlen] using
+                    (congrArg (fun n => choose s.length q * n) ht)
+  calc
+    (missedPlacements first quotas, totalPlacements first quotas) =
+        (missedBinomial first quotas, totalBinomial first quotas) :=
+      eight_atom_hypergeometric_count_pair first quotas
+    _ = (missedBinomial second quotas, totalBinomial second quotas) := hbins
+    _ = (missedPlacements second quotas, totalPlacements second quotas) :=
+      (eight_atom_hypergeometric_count_pair second quotas).symm
 
 /-- For any finite roster of quota draws, matching all eight atom
     inspection counts guarantees the same exact missed and total pairs
