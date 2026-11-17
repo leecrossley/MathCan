@@ -135,3 +135,5 @@ import MathCan.NOR34EightAtomMatchedCoverage
 import MathCan.NOR35IntraAtomCurvature
 
 import MathCan.NOR36PolicyAwareCurvature
+
+import MathCan.NOR37RandomizedCurvature
