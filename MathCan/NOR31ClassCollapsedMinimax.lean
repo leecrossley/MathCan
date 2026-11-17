@@ -24,48 +24,81 @@ namespace MathCan.NOR31ClassCollapsedMinimax
 
 universe u
 
-/-- An arbitrary rank ordering is a bijection of coordinate indices. -/
+/-- Reindex a complete proposed random ordering by a fixed coordinate
+    permutation. Written in Init-only function notation so no Mathlib
+    equivalence package is needed. -/
 def applyFixedRanking {α : Type u}
-    (ranking : Equiv α α) (sampled : Equiv α α) : Equiv α α :=
-  ranking.trans sampled
+    (ranking sampled : α → α) : α → α :=
+  fun x => sampled (ranking x)
 
-/-- Composition with the inverse ranking undoes the relabeling. -/
+/-- Precompose with the inverse fixed coordinate ordering. -/
 def undoFixedRanking {α : Type u}
-    (ranking : Equiv α α) (sampled : Equiv α α) : Equiv α α :=
-  ranking.symm.trans sampled
+    (inverseRanking sampled : α → α) : α → α :=
+  fun x => sampled (inverseRanking x)
 
+/-- A two-sided inverse for the fixed ranking explicitly undoes
+    reindexing for EVERY sampled ordering. -/
 theorem undo_after_apply {α : Type u}
-    (ranking sampled : Equiv α α) :
-    undoFixedRanking ranking (applyFixedRanking ranking sampled) = sampled := by
-  apply Equiv.ext
-  intro x
-  simp [applyFixedRanking, undoFixedRanking]
+    (ranking inverseRanking sampled : α → α)
+    (hRight : ∀ x, ranking (inverseRanking x) = x) :
+    undoFixedRanking inverseRanking
+      (applyFixedRanking ranking sampled) = sampled := by
+  funext x
+  simpa [undoFixedRanking, applyFixedRanking] using
+    congrArg sampled (hRight x)
 
 theorem apply_after_undo {α : Type u}
-    (ranking sampled : Equiv α α) :
-    applyFixedRanking ranking (undoFixedRanking ranking sampled) = sampled := by
-  apply Equiv.ext
-  intro x
-  simp [applyFixedRanking, undoFixedRanking]
+    (ranking inverseRanking sampled : α → α)
+    (hLeft : ∀ x, inverseRanking (ranking x) = x) :
+    applyFixedRanking ranking
+      (undoFixedRanking inverseRanking sampled) = sampled := by
+  funext x
+  simpa [undoFixedRanking, applyFixedRanking] using
+    congrArg sampled (hLeft x)
 
-/-- Every randomized ordering has exactly one preimage after composing
-    with a fixed ranking. This supplies a measure-preserving bijection
-    for the uniform distribution on finite permutations. -/
+/-- The fixed-ranking action is one-to-one and onto on all coordinate
+    functions. Restricting it to finite permutations preserves uniform
+    counting once closure under permutation composition is established. -/
 theorem uniform_permutation_relabeling_bijective {α : Type u}
-    (ranking : Equiv α α) :
-    Function.Bijective (applyFixedRanking ranking) := by
+    (ranking inverseRanking : α → α)
+    (left : ∀ x, inverseRanking (ranking x) = x)
+    (right : ∀ x, ranking (inverseRanking x) = x) :
+    (∀ a b : α → α,
+      applyFixedRanking ranking a = applyFixedRanking ranking b → a = b) ∧
+    (∀ target : α → α,
+      ∃ source : α → α, applyFixedRanking ranking source = target) := by
   constructor
   · intro a b h
-    have hh := congrArg (undoFixedRanking ranking) h
-    simpa [undo_after_apply] using hh
-  · intro sampled
-    refine ⟨undoFixedRanking ranking sampled, ?_⟩
-    exact apply_after_undo ranking sampled
+    have hh := congrArg (undoFixedRanking inverseRanking) h
+    simpa [undo_after_apply, right] using hh
+  · intro target
+    refine ⟨undoFixedRanking inverseRanking target, ?_⟩
+    exact apply_after_undo ranking inverseRanking target left
 
-/-- For each fixed first-k coordinate observation, exact uniform
-    permutation counting is preserved under the ranking relabeling. -/
+/-- The composition of two bijective coordinate functions has an
+    explicit two-sided inverse; the reindexing therefore restricts
+    to the finite permutation space rather than leaving it. -/
+theorem reindexing_preserves_permutations {α : Type u}
+    (ranking inverseRanking sampled inverseSampled : α → α)
+    (left : ∀ x, inverseRanking (ranking x) = x)
+    (right : ∀ x, ranking (inverseRanking x) = x)
+    (sampleLeft : ∀ x, inverseSampled (sampled x) = x)
+    (sampleRight : ∀ x, sampled (inverseSampled x) = x) :
+    ∃ combinedInverse : α → α,
+      (∀ x, combinedInverse (applyFixedRanking ranking sampled x) = x) ∧
+      (∀ x, applyFixedRanking ranking sampled (combinedInverse x) = x) := by
+  refine ⟨fun x => inverseRanking (inverseSampled x), ?_, ?_⟩
+  · intro x
+    change inverseRanking (inverseSampled (sampled (ranking x))) = x
+    rw [sampleLeft, left]
+  · intro x
+    change sampled (ranking (inverseRanking (inverseSampled x))) = x
+    rw [right, sampleRight]
+
+/-- Selecting a coordinate after random reindexing is the same as
+    applying the random permutation to the fixed-ranked coordinate. -/
 theorem permuted_ranking_sample_is_uniform_reindexing {α : Type u}
-    (ranking : Equiv α α) (sampled : Equiv α α) (coordinate : α) :
+    (ranking sampled : α → α) (coordinate : α) :
     applyFixedRanking ranking sampled coordinate =
       sampled (ranking coordinate) := by
   rfl
@@ -98,11 +131,13 @@ theorem template_floor_excludes_uniform_only
     (feasible : floor ≤
       uniformWeight*uniformTemplate + riskWeight*riskTemplate) :
     0 < riskWeight := by
-  by_contra h
-  have zero : riskWeight = 0 := Nat.eq_zero_of_not_pos h
-  have hfloor : floor ≤ uniformWeight*uniformTemplate := by
-    simpa [zero] using feasible
-  exact (Nat.not_le_of_gt uniformInsufficient) hfloor
+  cases riskWeight with
+  | zero =>
+      have hfloor : floor ≤ uniformWeight*uniformTemplate := by
+        simpa using feasible
+      exact False.elim ((Nat.not_le_of_gt uniformInsufficient) hfloor)
+  | succ n =>
+      exact Nat.zero_lt_succ n
 
 /-- An exact historical template lower-bound constraint remains valid
     after combining two equivalent uniform arms with equal per-arm
@@ -138,6 +173,7 @@ theorem reserved_uniform_weight_has_positive_floor
 #print axioms undo_after_apply
 #print axioms apply_after_undo
 #print axioms uniform_permutation_relabeling_bijective
+#print axioms reindexing_preserves_permutations
 #print axioms permuted_ranking_sample_is_uniform_reindexing
 #print axioms duplicate_policy_weights_collapse
 #print axioms duplicate_policy_class_collapse_all_attacker_rows
