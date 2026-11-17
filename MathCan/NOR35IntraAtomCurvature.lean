@@ -91,6 +91,7 @@ theorem independent_intraatom_reserve_product
       have htotal := congrArg Prod.snd hhead
       have ihmiss := congrArg Prod.fst ih
       have ihtotal := congrArg Prod.snd ih
+      simp only [Prod.fst, Prod.snd] at hmiss htotal ihmiss ihtotal
       apply Prod.ext
       · simp only [missedReserveWorlds,exactBinomialMisses]
         rw [hmiss,ihmiss]
