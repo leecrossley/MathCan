@@ -53,9 +53,9 @@ theorem strict_detection_when_exploration_can_hit
       uniformHits targetedHits := by
   have h : 0 < exploreWeight * uniformHits :=
     Nat.mul_pos hExplore hUniformHit
-  exact lt_of_lt_of_le h
-    (positive_exploration_weight_guarantees_coverage
-      exploreWeight totalWeight uniformHits targetedHits)
+  have hfloor := positive_exploration_weight_guarantees_coverage
+    exploreWeight totalWeight uniformHits targetedHits
+  exact Nat.lt_of_lt_of_le h hfloor
 
 /-- The equal-budget all-coordinates uniform draw remains an exactly
     enumerated conditional baseline, even when the attacked set was
