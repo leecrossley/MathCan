@@ -137,6 +137,21 @@ The preregistered competence gate required 90% training accuracy and 70% calibra
 
 The longer-training model remains weak on **its own training data**. This places an additional constraint on interpreting ROC-02E's causal null: source-rule competence is already missing upstream of the observer fitting problem. ROC-03A contains only one fresh seed, and neither its training change nor its calibration outcomes establish independent-family generalization. The sealed source families 6–7 remain unopened. A subsequent dated protocol should test a learnable query-conditioned binding retrieval architecture alongside a matched original-architecture control, with an explicit task-competence gate before assigning any mechanism label.
 
+## Dated postscript: ROC-03B identifies unseen-table memorization (17 November 2026)
+
+A second, separately preregistered training pilot, [ROC-03B LoopedTransformers PR #150](https://github.com/MoralityLabAI/LoopedTransformers/pull/150), addressed ROC-03A's weak training fit by supplying an explicit final-query route to the readout. A 128D tied recurrent state processes the early A binding and intervening distractor/carry events; a learned decoder predicts 8×8 table-row logits from that state, and the final visible query one-hot chooses the requested row. The route is a designed inductive bias. The protocol at `750e6a9e14fb5116082bb0ffdf967ed173e69e94` fixed two identical-start 1,920-step arms: task-only, and task loss plus 0.5 times eight-row A-table reconstruction loss from training inputs. Both see exactly the same original training families 0–3. Family-4/5 calibration labels remain outside gradient fitting.
+
+| ROC-03B 1,920-step arm | Train answer accuracy | Calibration answer accuracy | Train full-table accuracy | Calibration full-table accuracy |
+|---|---:|---:|---:|---:|
+| Task-only query-conditioned | 100% | **78/256 (30.47%)** | 100% | **0/256** |
+| With eight-row table supervision | 100% | **74/256 (28.91%)** | 100% | **0/256** |
+
+The table-supervised arm's calibration rowwise accuracy is 25.59%, with calibration cross-entropy **11.5879**. The fixed train ≥90% and calibration ≥70% task-competence gate **fails**. Both trained checkpoints and all eight milestones were independently replayed in [hosted CPU CI](https://github.com/MoralityLabAI/LoopedTransformers/actions/runs/44069373243).
+
+A **post-hoc** diagnostic of the published calibration predictions identifies the learned restriction: the decoded complete table exactly equals one of the four *training-family* rule tables on **244 of 256** calibration cases in the table-supervised arm (216/256 task-only). The true calibration tables belong to different source families, and the model decodes only six distinct table vectors under table supervision. This check was conducted after the registered outcome, on the already exposed calibration families. It is an observational output diagnosis, with no new-source inferential status.
+
+Together the two follow-ups separate failure modes: the original linear-readout recurrent model struggles even on its training examples after longer optimization, while the query-conditioned table-decoder fits those four training rule families perfectly and fails to transfer to unseen tables. The source-family generator needs broader combinatorial training support, with a newly frozen, genuinely unseen permutation-family split and equal-budget controls, before using these models to test a learned causal quotient. Families 6 and 7 from the original ROC-02 sealed test remain unopened.
+
 ## Reproducibility and source record
 
 - Original ROC-02 source, model binaries and split manifest: [LoopedTransformers delayed-rule experiment](https://github.com/MoralityLabAI/LoopedTransformers/tree/main/experiments/roc02_delayed_rule_v1).
