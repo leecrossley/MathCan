@@ -6,8 +6,8 @@ import MathCan.NOR31MatchedRootCalibration
 At stage n, an auditor reveals the first n check lists of one fixed
 root-derived sequence. The union of inspected positions grows as n grows;
 equivalently the coordinates never inspected by any check shrink. If one
-radius-four altered set evades all checks in a LONGER prefix, it also evades
-every check in the SHORTER prefix. Feasibility of a completely missed batch
+radius-four altered set evades all checks in a LONGER batchStart, it also evades
+every check in the SHORTER batchStart. Feasibility of a completely missed batch
 cannot reappear after it is lost. These finite logical statements are fully
 independent of the randomness generator.
 
@@ -40,10 +40,10 @@ def evadesBatch {Coordinate : Type u}
 sub-batches. Append decomposition is exact for finite inspection lists. -/
 theorem evades_append_iff
     {Coordinate : Type u}
-    (prefix suffix : List (List Coordinate))
+    (batchStart suffix : List (List Coordinate))
     (attack : List Coordinate) :
-    evadesBatch (prefix ++ suffix) attack ↔
-      evadesBatch prefix attack ∧ evadesBatch suffix attack := by
+    evadesBatch (batchStart ++ suffix) attack ↔
+      evadesBatch batchStart attack ∧ evadesBatch suffix attack := by
   constructor
   · intro h
     constructor
@@ -57,7 +57,7 @@ theorem evades_append_iff
     · exact h.2 plan inSuffix
 
 /-- A specific coordinate is untouched if every check in the batch
-avoids it, including checks introduced by the trained-risk prefix. -/
+avoids it, including checks introduced by the trained-risk batchStart. -/
 def neverInspected {Coordinate : Type u}
     (plans : List (List Coordinate)) (i : Coordinate) : Prop :=
   ∀ plan ∈ plans, i ∉ plan
@@ -106,10 +106,10 @@ def totalBatchLoss {Scan : Type u} {Attack : Type v}
 
 theorem total_batch_loss_append
     {Scan : Type u} {Attack : Type v}
-    (prefix suffix : List Scan)
+    (batchStart suffix : List Scan)
     (loss : Scan → Attack → Nat) (attack : Attack) :
-    totalBatchLoss (prefix ++ suffix) loss attack =
-      totalBatchLoss prefix loss attack +
+    totalBatchLoss (batchStart ++ suffix) loss attack =
+      totalBatchLoss batchStart loss attack +
         totalBatchLoss suffix loss attack := by
   simp [totalBatchLoss, List.map_append, List.sum_append]
 
@@ -117,10 +117,10 @@ theorem total_batch_loss_append
 any fixed altered support, regardless of how the source was sampled. -/
 theorem total_detection_count_monotone_under_nested_audits
     {Scan : Type u} {Attack : Type v}
-    (prefix suffix : List Scan)
+    (batchStart suffix : List Scan)
     (loss : Scan → Attack → Nat) (attack : Attack) :
-    totalBatchLoss prefix loss attack ≤
-      totalBatchLoss (prefix ++ suffix) loss attack := by
+    totalBatchLoss batchStart loss attack ≤
+      totalBatchLoss (batchStart ++ suffix) loss attack := by
   rw [total_batch_loss_append]
   omega
 
@@ -129,14 +129,14 @@ when additional checks are appended. It follows that the minimum total
 hit count across this fixed menu cannot decrease as the batch grows. -/
 theorem any_menu_lower_bound_survives_extra_audits
     {Scan : Type u} {Attack : Type v}
-    (menu : List Attack) (prefix suffix : List Scan)
+    (menu : List Attack) (batchStart suffix : List Scan)
     (loss : Scan → Attack → Nat) (lower : Nat)
-    (h : ∀ attack ∈ menu, lower ≤ totalBatchLoss prefix loss attack) :
+    (h : ∀ attack ∈ menu, lower ≤ totalBatchLoss batchStart loss attack) :
     ∀ attack ∈ menu,
-      lower ≤ totalBatchLoss (prefix ++ suffix) loss attack := by
+      lower ≤ totalBatchLoss (batchStart ++ suffix) loss attack := by
   intro attack inMenu
   exact Nat.le_trans (h attack inMenu)
-    (total_detection_count_monotone_under_nested_audits prefix suffix loss attack)
+    (total_detection_count_monotone_under_nested_audits batchStart suffix loss attack)
 
 /-- A concrete counterexample: a fixed attack is caught on the first
 audit and not on the second. Its hit RATE drops from 1/1 to 1/2
