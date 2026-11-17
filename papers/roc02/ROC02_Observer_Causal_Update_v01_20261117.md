@@ -122,6 +122,21 @@ The original models have low calibration accuracy, only six independent initiali
 
 The next registered cohort should train the delayed-rule model to stronger **train and calibration accuracy under a source lock**, then freeze the architecture, observer selection, causal protocol, and checkpoint SHA before consulting any untouched family. A simple deterministic symbolic table interpreter already solves the generated task by construction, establishing its exact answer and exposing a useful model-capability gap. The new cohort needs an equal-budget task-only observer, full rank-matched nulls, true source/cue/distractor changes, and six-seed paired analysis. A positive result requires correct counterfactual-rule behavior above an implementable equal-cost input policy and prespecified multiple-testing control.
 
+## Dated postscript: ROC-03A training-competence gate (17 November 2026)
+
+Following the negative ROC-02E rule-intervention result, a separate source-locked feasibility experiment [ROC-03A, merged LoopedTransformers PR #149](https://github.com/MoralityLabAI/LoopedTransformers/pull/149) tested whether greater optimizer exposure could make the **original architecture** learn its task reliably. The protocol was committed at `39ef4b657edca1b77ada9be745cc71f57e0776b2` before the new fit. One fresh initialization, `2026111701`, used the original depth-8, width-128 tied residual model, 1,920 AdamW updates, batch size 32, and the same SHA-verified train (families 0–3) and exposed calibration (families 4–5) files. The final training checkpoint was selected at the precommitted update count, regardless of calibration accuracy.
+
+| ROC-03A fixed update | Training accuracy /1,024 | Calibration accuracy /256 |
+|---:|---:|---:|
+| 240 | 296/1,024 (28.91%) | 54/256 (21.09%) |
+| 480 | 338/1,024 (33.01%) | 66/256 (25.78%) |
+| 960 | 330/1,024 (32.23%) | 58/256 (22.66%) |
+| 1,920 | **362/1,024 (35.35%)** | **72/256 (28.13%)** |
+
+The preregistered competence gate required 90% training accuracy and 70% calibration accuracy at the final update. **Both thresholds failed.** The final training and calibration cross-entropies were 1.344957 and 1.394293, respectively. Independently reloading the 1,920-step model reconstructed these scores and the checkpoint SHA-256 `bac422572c6bac3dbeca11f3f49feed4a25d61742855a6e8690186f0c088be3d`. A hosted CPU workflow reproduced the original checkpoint hash **byte for byte**. The original depth-8 ROC-02 six-seed model mean was 24.15% train and 21.55% calibration, using a different initialization set and shorter training, so the numerical improvement is a descriptive cross-cohort contrast.
+
+The longer-training model remains weak on **its own training data**. This places an additional constraint on interpreting ROC-02E's causal null: source-rule competence is already missing upstream of the observer fitting problem. ROC-03A contains only one fresh seed, and neither its training change nor its calibration outcomes establish independent-family generalization. The sealed source families 6–7 remain unopened. A subsequent dated protocol should test a learnable query-conditioned binding retrieval architecture alongside a matched original-architecture control, with an explicit task-competence gate before assigning any mechanism label.
+
 ## Reproducibility and source record
 
 - Original ROC-02 source, model binaries and split manifest: [LoopedTransformers delayed-rule experiment](https://github.com/MoralityLabAI/LoopedTransformers/tree/main/experiments/roc02_delayed_rule_v1).
