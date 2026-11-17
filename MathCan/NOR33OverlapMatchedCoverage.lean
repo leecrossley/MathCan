@@ -24,7 +24,8 @@ namespace MathCan.NOR33OverlapMatchedCoverage
 
 abbrev choose := MathCan.NOR23CoordinateAudit.binomial
 abbrev inspectedCount := MathCan.NOR32UnknownSupportCoverage.inspectedCount
-abbrev kSubsets := MathCan.NOR23CoordinateAudit.kSubsets
+def kSubsets (xs : List Bool) (k : Nat) : List (List Bool) :=
+  MathCan.NOR23CoordinateAudit.kSubsets xs k
 
 /-- Number of possible fixed-radius attacks with z coordinates from
     risk-support block A and r-z from complementary block B. -/
