@@ -127,3 +127,5 @@ import MathCan.NOR31ClassCollapsedMinimax
 import MathCan.NOR32UnknownSupportCoverage
 
 import MathCan.NOR32NestedAuditCoverage
+
+import MathCan.NOR33OverlapMatchedCoverage
