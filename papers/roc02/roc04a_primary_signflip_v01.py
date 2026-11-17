@@ -27,7 +27,7 @@ DEV_N = 256
 
 def verify(path: Path = ROWS) -> dict:
     raw = path.read_bytes()
-    blob = hashlib.sha1(f"blob {len(raw)}\\0".encode() + raw).hexdigest()
+    blob = hashlib.sha1(f"blob {len(raw)}".encode() + bytes([0]) + raw).hexdigest()
     if blob != SOURCE_BLOB:
         raise AssertionError(f"source CSV changed: {blob}")
     with path.open(newline="", encoding="utf-8") as fh:
