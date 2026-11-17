@@ -119,3 +119,5 @@ import MathCan.NOR28CommitBeforeEntropy
 import MathCan.NOR29EarlyEntropyGame
 
 import MathCan.NOR30MixedAudit
+
+import MathCan.NOR31ClassCollapsedMinimax
