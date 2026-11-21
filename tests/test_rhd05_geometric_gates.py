@@ -24,7 +24,8 @@ class DeepGaloisTests(unittest.TestCase):
                 # Replacing one proof field must invalidate the contract.
                 original = "\n  " + EXPECTED_FIELDS[label][0] + " :"
                 mutated = body.replace(original, "\n  bogus :")
-                full = "\n".join(REQUIRED[label]) + "\n" + mutated
+                anchors = (s for s in REQUIRED[label] if not s.startswith("structure "))
+                full = "\n".join(anchors) + "\n" + mutated
                 verify_source(label, full)
 
     def test_missing_supplier_and_mutation_gate(self):
