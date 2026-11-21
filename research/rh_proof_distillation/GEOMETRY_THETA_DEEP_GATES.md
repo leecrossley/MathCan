@@ -31,3 +31,31 @@ The source declarations `TLift_k` and `TLiftK` were found textually identical af
 - Compare the mathematical meaning of the local Langlands input `recTExists` and its use in `everyCharacter_of_row` after the geometric and theta-lift gates pass.
 
 Source baseline for the extra 11 files is recorded by the auditor under `SOURCES`, including the direct Lefschetz bridge, PlanEx supplier, 17-field Steps record, six-field KSAll record and theta construction. The receipts deliberately mark `proof_term_data=false`.
+
+
+## External whole-proof verification as of 2026-11-21 12:55 UTC
+
+Andrew Sutherland's independent checking log at https://math.mit.edu/~drew/grh/
+reports that all 175,187 upstream modules compiled and passed Lean `leanchecker`
+replay; the Rust nanoda kernel and con-leche accepted the full export; lean4lean
+accepted the compiled modules; and con-leche's independent statement comparator
+found all five headline Main theorems justified against the Mathlib-only
+challenge. The five headline declarations list only the standard axioms
+`propext`, `Classical.choice` and `Quot.sound`. The report still listed the
+full `lake comparator` and default/paranoid Lean export-kernel replay as
+running at that timestamp.
+
+This is independent *whole-proof* checking and substantially strengthens the
+formal correctness evidence. The local RHD-05 CI is deliberately a much narrower
+source-pinning and proof-interface gate. Its purpose is now to identify the
+actual geometric, automorphic and local-global mathematical claims and exhibit
+their intended nonvacuous instantiations. Statement meaning and the exact
+row-call hypotheses take priority over redundant abstract Lean wrappers.
+
+The external comparison reports that the claimed RH and four Dirichlet
+L-function statements are exactly the Mathlib-only challenge statements.
+This is evidence about encoded theorem semantics at the headline level.
+It leaves room for a detailed mathematical audit of the underlying Galois
+row's role, especially how `PlanEx` and `TLiftK` discharge their hypotheses
+in the eventual construction. Maintain separate evidence levels for
+source matches, compiled proof-term checks, and mathematical interpretation.
