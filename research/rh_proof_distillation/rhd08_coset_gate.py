@@ -94,7 +94,7 @@ def classify(n: int, ell: int, d: int) -> dict:
     fiber = len(H) // len(set(H) & set(D))
     assert len(upstairs) * len(D) == len(G)
     assert len(downstairs) * fiber == len(upstairs)
-    assert bool(same_pairs) == fiber > 1
+    assert bool(same_pairs) == (fiber > 1)
     if sq_at:
         assert set(D) <= set(H)
         assert split_at_ell
