@@ -57,6 +57,8 @@ satisfies the trace recurrence. Once s is known, the first 2s
 power traces uniquely determine its coefficients through the
 invertible Hankel system.
 
+At $p=3$, the eight Dirichlet characters in Lee Crossley’s 547/727 example have local Euler denominator $(1-T^4)^2$. The four eigenvalues $1,-1,i,-i$ each occur twice, giving $(t_1,\ldots,t_8)=(0,0,0,8,0,0,0,8)$. The Hankel matrix has 8 on its antidiagonal and zero elsewhere, so $\det H=4096$ and the recovered polynomial is $X^4-1$. All four poles survive the first three vanishing traces. [Euler factors, order-four case](https://github.com/leecrossley/theta-race-finite-euler-readout/blob/b01619cac6e661a66587a45af435413592d368d0/PROOF.md#L53-L61) ([DOI](https://doi.org/10.5281/zenodo.24413208)).
+
 ## Relation to Lemma 2
 
 For each fixed k, the genuine Frobenius module
