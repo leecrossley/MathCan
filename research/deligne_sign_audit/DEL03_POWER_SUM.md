@@ -16,7 +16,7 @@ t_n=\sum_{j=1}^s m_j\lambda_j^n,\qquad n\ge1.
 The $`s\times s`$ Hankel matrix $`H_{ab}=t_{a+b+1}`$, for $`0\le a,b<s`$, factors as
 
 ```math
-H=V\operatorname{diag}(m_j\lambda_j)V^T,
+H=V\,\mathrm{diag}(m_j\lambda_j)V^T,
 \qquad V_{aj}=\lambda_j^a.
 ```
 
@@ -24,7 +24,7 @@ Consequently
 
 ```math
 \boxed{\det H=\left(\prod_j m_j\lambda_j\right)
-                 \prod_{i<j}(\lambda_j-\lambda_i)^2}.
+                 \prod_{i\lt j}(\lambda_j-\lambda_i)^2}.
 ```
 
 The identity holds over characteristic-zero fields. Genuine algebraic multiplicities have $`m_j>0`$. With $`\lambda_j\ne0`$ and distinctness, the determinant is nonzero, so the full set of $`s`$ spectral poles is present in the trace sequence.
